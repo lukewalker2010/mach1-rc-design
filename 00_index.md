@@ -22,6 +22,15 @@
 | 08 | **`08_launch_recovery.md`** | Launch dolly, belly skid, drogue chute design, drawings | 8 |
 | 09 | **`09_bom.md`** | Bill of materials (~$7,000), 150-hr build sequence, flight checklist | 8 |
 
+## Engineering Analyses
+
+| # | File | Contents | Pages ~ |
+|---|------|----------|---------|
+| 10 | **`10_structural_analysis.md`** | Full structural feasibility: spar design, flutter risk, thermal loads, weight budget, load factors | 10 |
+| 11 | **`11_inlet_analysis.md`** | Supersonic inlet analysis: spillage drag, boundary layer diverter, auxiliary doors, FADEC integration | 10 |
+| 12 | **`12_aero_evaluation.md`** | Aerodynamic evaluation: drag breakdown, trim, stability margins, transonic wave drag | 6 |
+| 13 | **`13_propulsion_analysis.md`** | Propulsion analysis: thrust at altitude, specific impulse, C-D nozzle gains, fuel consumption | 5 |
+
 ---
 
 ## Key Parameters
