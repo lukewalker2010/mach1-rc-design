@@ -9,18 +9,18 @@
 
 | Item | Part | Qty | Price | Purchase Link | Notes |
 |------|------|-----|-------|--------------|-------|
-| **Engine** | JetCat P550-PRO (incl. ECU + pump) | 1 | $4,500 | [jetcat.de](https://www.jetcat.de/en/products/produkte/jetcat/kategorien/professional/550%20PRO-S) · [Chief RC](https://www.chiefrc.com/collections/jet-cat-turbines) · [Tomahawk Aviation](https://tomahawk-aviation.com/eu/detail/index/sArticle/3217) | Price on request from JetCat. European dealers ~€4,500-5,500 |
+| **Engine** | JetCat P550-PRO (incl. ECU + pump) | 1 | $4,500 | [jetcat.de](https://www.jetcat.de/en/products/produkte/jetcat/kategorien/professional/550%20PRO-S) · [Chief RC](https://www.chiefrc.com/collections/jet-cat-turbines) | Price on request from JetCat. US dealers ~$4,500-5,500 |
 
 ## 2. Major Structure Materials
 
 | Item | Part | Qty | Price | Purchase Link | Notes |
 |------|------|-----|-------|--------------|-------|
-| **Carbon prepreg** | ACP Composites 3K twill 200 g/m² | 5 m² | $225 | [acpsales.com](https://www.acpsales.com) | |
-| **Carbon spar rod** | DragonPlate 5mm pultruded T800 | 1m | $18 | [dragonplate.com](https://www.dragonplate.com) | |
-| **Epoxy resin** | West System 105 + 206 hardener | 2L | $120 | [westsystem.com](https://www.westsystem.com) · [Amazon](https://www.amazon.com/s?k=west+system+105+206) | |
-| **Epoxy bonding** | West System 105 + 406 colloidal silica | 0.5L | $40 | [westsystem.com](https://www.westsystem.com) | |
-| **Foam core** | Rohacell 71IG, 5mm | 1 m² | $80 | [aircraftspruce.com](https://www.aircraftspruce.com) | |
-| **Inconel 718 intake** | Xometry DMLS 3D print | 1 | $350 | [xometry.com](https://www.xometry.com) | Upload STL, get instant quote |
+| **Carbon prepreg** | ACP Composites 3K twill 200 g/m² | 5 m² | $225 | [ACP Composites — Carbon Prepregs](https://acpcomposites.com/category/carbon-fiber/carbon-prepregs) | |
+| **Carbon spar rod** | DragonPlate 5mm pultruded T800 | 1m | $18 | [DragonPlate — Carbon Fiber Rods](https://dragonplate.com/carbon-fiber-rod) | |
+| **Epoxy resin** | West System 105 + 206 hardener | 2L | $120 | [West System](https://www.westsystem.com) · [Amazon](https://www.amazon.com/s?k=west+system+105+206) | |
+| **Epoxy bonding** | West System 105 + 406 colloidal silica | 0.5L | $40 | [West System](https://www.westsystem.com) | |
+| **Foam core** | Rohacell 71IG, 5mm | 1 m² | $80 | [Aircraft Spruce](https://www.aircraftspruce.com) | |
+| **Inconel 718 intake** | Xometry DMLS 3D print | 1 | $350 | [Xometry — Instant Quote](https://www.xometry.com) | Upload STL, get instant quote |
 | **SS tube (nozzle)** | 304 SS, 35mm OD × 1mm wall | 50mm | $10 | [mcmaster.com](https://www.mcmaster.com/304-stainless-steel-tubing) | P/N 89525K514 |
 | **7075-T6 plate** | Mount ring, hardpoints | 0.2m² | $50 | [mcmaster.com](https://www.mcmaster.com/7075-aluminum) | |
 | **6061-T6 sheet** | Brackets, small parts | 0.3m² | $20 | [mcmaster.com](https://www.mcmaster.com/6061-aluminum) | |
@@ -33,14 +33,14 @@
 | **Flight Controller** | Cube Orange+ Standard Set (w/ ADS-B) | 1 | $300 | [Amazon](https://www.amazon.com/The-Cube-Orange-Standard-Set/dp/B0C8Y1LMGZ) · [ReadyMadeRC](https://www.readymaderc.com/products/details/pixhawk2-cube-orange-plus-standard-set-cube-carrier) · [CubePilot](https://www.cubepilot.com) | |
 | **GPS** | CubePilot Here+ RTK GNSS (M8P) | 1 | $100 | [CubePilot](https://www.cubepilot.com) · [GetFPV](https://www.getfpv.com/cubepilot-here-rtk-gnss-gps-kit-m8p.html) · [RobotShop](https://www.robotshop.com/products/cubepilot-here-v2-rtk-gnss-gps-m8p) | |
 | **Telemetry** | RFD900x-US (FCC approved) | 1 | $120 | [ReadyMadeRC](https://www.readymaderc.com/products/details/rfdesign-rfd-900x-modem-us-fcc) · [RFD900x Bundle](https://www.readymaderc.com/products/details/rfdesign-900x-telemetry-modem-bundle) · [WorldDroneMarket](https://www.worldronemarket.com/product/rfd900x-us-bundle/) | Buy bundle (air + ground) for ~$220 |
-| **Pitot-static** | Eagle Tree pitot + static ports | 1 | $45 | [eagletreetechnologies.com](https://www.eagletreetechnologies.com) | |
+| **Pitot-static** | Eagle Tree pitot + static ports | 1 | $45 | [ReadyMadeRC — Eagle Tree Pitot Kit](https://www.readymaderc.com/products/details/eagle-tree-additional-prandtl-pitot-static-tube-kit) | |
 | **Airspeed sensor** | MS4525DO differential pressure | 1 | $35 | [Mouser](https://www.mouser.com/Search/Refine?Keyword=MS4525DO) · [DigiKey](https://www.digikey.com/en/products/filter/pressure-sensors/534) · [eBay](https://www.ebay.com/sch/i.html?_nkw=MS4525DO) | |
 
 ## 4. Power System
 
 | Item | Part | Qty | Price | Purchase Link | Notes |
 |------|------|-----|-------|--------------|-------|
-| **Battery** | 2S LiPo 5000mAh 30C | 1 | $80 | [Amazon](https://www.amazon.com/s?k=2S+LiPo+5000mAh+30C) · [HobbyKing](https://hobbyking.com) · [Amain Hobbies](https://www.amainhobbies.com) | Deans connector preferred |
+| **Battery** | 2S LiPo 5000mAh 30C | 1 | $80 | [Amazon](https://www.amazon.com/s?k=2S+LiPo+5000mAh+30C) · [HobbyKing](https://hobbyking.com) · [AMain Hobbies](https://www.amainhobbies.com) | Deans connector preferred |
 | **Power dist** | Pixhawk Power Module | 1 | $25 | [CubePilot](https://www.cubepilot.com) · [Amazon](https://www.amazon.com/s?k=pixhawk+power+module) | |
 | **Deans connectors** | Amass T-plug pairs | 3 | $12 | [Amazon](https://www.amazon.com/s?k=amass+deans+t-plug) | |
 | **JR connectors** | Male + female servo connectors | 20 | $30 | [Amazon](https://www.amazon.com/s?k=jr+servo+connector) | |
@@ -88,7 +88,7 @@
 
 | Item | Part | Qty | Price | Purchase Link | Notes |
 |------|------|-----|-------|--------------|-------|
-| **Main chute** | 0.6m hemispherical ribbon | 1 | $30 | [Chutingstar](https://www.chutingstar.com) · [Amazon](https://www.amazon.com/s?k=0.6m+drogue+parachute) | |
+| **Main chute** | 0.6m hemispherical ribbon | 1 | $30 | [ChutingStar](https://www.chutingstar.com) · [Amazon](https://www.amazon.com/s?k=0.6m+drogue+parachute) | |
 | **Pilot chute** | 0.1m spring-loaded | 1 | $15 | [Amazon](https://www.amazon.com/s?k=rc+pilot+chute+spring) | |
 | **Bridle** | 500kg Kevlar, 3m | 1 | $10 | [Amazon](https://www.amazon.com/s?k=kevlar+cord+500kg) | |
 | **Swivel** | Ball-bearing swivel | 1 | $8 | [Amazon](https://www.amazon.com/s?k=ball+bearing+swivel+parachute) | |
@@ -106,8 +106,8 @@
 | **Bag sealant** | QT-2 butyl tape | 2 rolls | $12 | [Amazon](https://www.amazon.com/s?k=vacuum+bag+sealant+tape) | |
 | **CNC foam plug** | PU foam block 200×200×1000mm | 1 | $30 | [McMaster](https://www.mcmaster.com/urethane-foam) | |
 | **Sanding** | Grits 80-1000, blocks | 1 lot | $25 | [Amazon](https://www.amazon.com/s?k=sandpaper+assortment+80+1000) | |
-| **Tooling gelcoat** | Grey, 2kg | 2kg | $60 | [fibreglast.com](https://www.fibreglast.com) · [Amazon](https://www.amazon.com/s?k=tooling+gelcoat) | |
-| **Fiberglass** | 200 g/m² woven, tooling | 10 m² | $100 | [fibreglast.com](https://www.fibreglast.com) · [Amazon](https://www.amazon.com/s?k=fiberglass+cloth+200g) | |
+| **Tooling gelcoat** | Grey, 2kg | 2kg | $60 | [Fibre Glast](https://www.fibreglast.com) · [Amazon](https://www.amazon.com/s?k=tooling+gelcoat) | |
+| **Fiberglass** | 200 g/m² woven, tooling | 10 m² | $100 | [Fibre Glast](https://www.fibreglast.com) · [Amazon](https://www.amazon.com/s?k=fiberglass+cloth+200g) | |
 | **Fasteners** | M2-M6 nylon + stainless | 1 lot | $30 | [Amazon](https://www.amazon.com/s?k=model+aircraft+hardware+kit) | |
 
 ---
@@ -135,14 +135,14 @@
 - [ ] JetCat P550-PRO — contact [jetcat.de](https://www.jetcat.de) or [Chief RC](https://www.chiefrc.com) for quote
 - [ ] Futaba R7018SB — check [eBay](https://www.ebay.com/sch/i.html?_nkw=Futaba+R7018SB)
 - [ ] KST X20-12T ×2 — order from [kstservos.com](https://kstservos.com)
-- [ ] Inconel 718 DMLS — upload STL to [xometry.com](https://www.xometry.com)
+- [ ] Inconel 718 DMLS — upload STL to [Xometry](https://www.xometry.com)
 
 ### Priority 2 — Order This Week
 - [ ] Cube Orange+ — [Amazon](https://www.amazon.com/dp/B0C8Y1LMGZ) or [ReadyMadeRC](https://www.readymaderc.com/products/details/pixhawk2-cube-orange-plus-standard-set-cube-carrier)
 - [ ] RFD900x bundle — [ReadyMadeRC](https://www.readymaderc.com/products/details/rfdesign-900x-telemetry-modem-bundle)
 - [ ] Here+ GPS — [CubePilot](https://www.cubepilot.com)
-- [ ] Carbon prepreg — [ACP Composites](https://www.acpsales.com)
-- [ ] DragonPlate spar rod — [dragonplate.com](https://www.dragonplate.com)
+- [ ] Carbon prepreg — [ACP Composites](https://acpcomposites.com/category/carbon-fiber/carbon-prepregs)
+- [ ] DragonPlate spar rod — [DragonPlate](https://dragonplate.com/carbon-fiber-rod)
 
 ### Priority 3 — Order When Ready to Build
 - [ ] All Amazon consumables (wire, connectors, epoxy, vacuum supplies)
