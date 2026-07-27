@@ -1,75 +1,52 @@
 import cadquery as cq
 import math
 
-ring_id = 70.0
+section_h = 15.0
 ring_od = 80.0
 ring_wall = 2.0
 n_injectors = 6
-inj_angle = 15
-orifice_d = 0.5
 inj_tube_od = 2.0
 inj_tube_len = 12.0
 fuel_tube_od = 4.0
 fuel_tube_id = 2.5
 
-# Outer ring for sandwich mounting (same OD as flanges, same ID as ring OD)
-mount_od = 100.0
-mount_id = 80.0
-mount_t = 3.0
+body = cq.Workplane("XY").circle(80 / 2).circle(70 / 2).extrude(section_h)
 
-mount_ring = (
-    cq.Workplane("XY")
-    .circle(mount_od / 2)
-    .circle(mount_id / 2)
-    .extrude(mount_t)
-)
-
-tube_center_r = (ring_id + ring_od) / 4
-tube_d = (ring_od - ring_id) / 2
-
-torus_outer = cq.Solid.makeTorus(tube_center_r, tube_d / 2)
-torus_inner = cq.Solid.makeTorus(tube_center_r, (tube_d - 2 * ring_wall) / 2)
-
-spray_ring = cq.Workplane("XY").newObject([torus_outer]).cut(
-    cq.Workplane("XY").newObject([torus_inner])
-)
+tube_center_r = 75 / 2
+tube_d = 5.0
+gallery_outer = cq.Solid.makeTorus(tube_center_r, tube_d / 2)
+gallery_inner = cq.Solid.makeTorus(tube_center_r, (tube_d - 2 * ring_wall) / 2)
+gallery = cq.Workplane("XY").newObject([gallery_outer]).cut(
+    cq.Workplane("XY").newObject([gallery_inner])
+).translate((0, 0, section_h / 2))
+body = body.union(gallery)
 
 for i in range(n_injectors):
-    angle = i * 360.0 / n_injectors
-    rad = math.radians(angle)
-    x = ring_od / 2 * math.cos(rad)
-    y = ring_od / 2 * math.sin(rad)
-    
-    inj_solid = (
-        cq.Workplane("XZ")
-        .transformed(offset=(x, y, 0))
-        .rotate((0, 0, 0), (0, 0, 1), angle)
+    a = i * 360.0 / n_injectors
+    inj = (
+        cq.Workplane("XY")
+        .transformed(offset=(ring_od / 2, 0, 0))
+        .rotate((0, 0, 0), (0, 1, 0), -15)
         .circle(inj_tube_od / 2)
         .extrude(inj_tube_len)
+        .rotate((0, 0, 0), (0, 0, 1), a)
     )
-    spray_ring = spray_ring.union(inj_solid)
-    
-    inj_hole = (
-        cq.Workplane("XZ")
-        .transformed(offset=(x, y, 0))
-        .rotate((0, 0, 0), (0, 0, 1), angle)
-        .circle(orifice_d / 2)
-        .extrude(inj_tube_len + 0.02)
-    )
-    spray_ring = spray_ring.cut(inj_hole)
+    body = body.union(inj)
 
-fuel_supply = (
-    cq.Workplane("XY")
-    .transformed(offset=(ring_od / 2, 0, 0))
-    .circle(fuel_tube_od / 2)
-    .extrude(25.0)
-    .faces(">Z")
-    .circle(fuel_tube_id / 2)
-    .cutThruAll()
+fuel = (
+    cq.Workplane("YZ")
+    .transformed(offset=(ring_od / 2, 0, section_h / 2))
+    .circle(fuel_tube_od / 2).circle(fuel_tube_id / 2)
+    .extrude(20.0)
 )
-spray_ring = spray_ring.union(fuel_supply)
+body = body.union(fuel)
 
-result = spray_ring.translate((0, 0, mount_t)).union(mount_ring)
+for i in range(4):
+    a = i * 360.0 / 4
+    bx = 95 / 2 * math.cos(math.radians(a))
+    by = 95 / 2 * math.sin(math.radians(a))
+    bolt = cq.Workplane("XY").transformed(offset=(bx, by, -0.01)).circle(4.3 / 2).extrude(section_h + 0.02)
+    body = body.cut(bolt)
 
-cq.exporters.export(result, "ab_spray_ring.step")
+cq.exporters.export(body, "ab_spray_ring.step")
 print("Exported ab_spray_ring.step")
