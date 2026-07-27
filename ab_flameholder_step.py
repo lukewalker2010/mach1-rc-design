@@ -44,25 +44,26 @@ body = body.cut(v_solid)
 
 for i in range(n_arms):
     angle = i * 360.0 / n_arms
+    cx = (inner_r + outer_r) / 2 * math.cos(math.radians(angle))
+    cy = (inner_r + outer_r) / 2 * math.sin(math.radians(angle))
     arm = (
         cq.Workplane("XY")
-        .transformed(offset=(inner_r, -arm_width / 2, 0))
+        .transformed(offset=(cx, cy, 0), rotate=(0, 0, angle))
         .rect((outer_r - inner_r), arm_width)
         .extrude(section_len)
     )
     body = body.union(arm)
 
 glow_x = (inner_r + outer_r) / 2
-glow_boss = (
-    cq.Workplane("XY")
-    .transformed(offset=(glow_x, 0, section_len / 2))
+glow_mount = (
+    cq.Workplane("YZ")
+    .center(0, section_len / 2)
     .circle(7.0)
-    .extrude(8.0)
-    .faces("<Z")
     .circle(glowplug_d / 2)
-    .cutThruAll()
+    .extrude(8.0)
+    .translate((glow_x, 0, 0))
 )
-body = body.union(glow_boss)
+body = body.union(glow_mount)
 
 flange = (
     cq.Workplane("XY")

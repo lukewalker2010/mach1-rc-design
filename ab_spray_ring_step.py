@@ -12,6 +12,18 @@ inj_tube_len = 12.0
 fuel_tube_od = 4.0
 fuel_tube_id = 2.5
 
+# Outer ring for sandwich mounting (same OD as flanges, same ID as ring OD)
+mount_od = 100.0
+mount_id = 80.0
+mount_t = 3.0
+
+mount_ring = (
+    cq.Workplane("XY")
+    .circle(mount_od / 2)
+    .circle(mount_id / 2)
+    .extrude(mount_t)
+)
+
 tube_center_r = (ring_id + ring_od) / 4
 tube_d = (ring_od - ring_id) / 2
 
@@ -32,7 +44,6 @@ for i in range(n_injectors):
         cq.Workplane("XZ")
         .transformed(offset=(x, y, 0))
         .rotate((0, 0, 0), (0, 0, 1), angle)
-        .transformed(offset=(0, 0, 0))
         .circle(inj_tube_od / 2)
         .extrude(inj_tube_len)
     )
@@ -58,5 +69,7 @@ fuel_supply = (
 )
 spray_ring = spray_ring.union(fuel_supply)
 
-cq.exporters.export(spray_ring, "ab_spray_ring.step")
+result = spray_ring.translate((0, 0, mount_t)).union(mount_ring)
+
+cq.exporters.export(result, "ab_spray_ring.step")
 print("Exported ab_spray_ring.step")

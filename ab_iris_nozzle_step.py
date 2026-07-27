@@ -47,52 +47,50 @@ for i in range(n_petals):
     py = pivot_r * math.sin(math.radians(angle))
     mounting_ring = mounting_ring.faces("<Z").workplane().transformed(offset=(px, py, 0)).circle((pivot_pin_d + 0.2) / 2).cutThruAll()
 
-def make_petal_sector(radius, span_deg, n_pts=20):
-    pts = []
-    half = span_deg / 2
-    for j in range(n_pts + 1):
-        theta = -half + span_deg * j / n_pts
-        t_rad = math.radians(theta)
-        pts.append((radius * math.cos(t_rad), radius * math.sin(t_rad)))
-    return pts
-
 throat_r = closed_r
 exit_r = throat_r + petal_len * 0.105
-inner_pts = make_petal_sector(2 * throat_r, petal_span)
-outer_pts = make_petal_sector(2 * throat_r + 12, petal_span)
 
-result = mounting_ring
-
-for i in range(n_petals):
-    angle = i * 360.0 / n_petals
+def build_petal():
+    n_pts = 20
+    half = petal_span / 2
+    outer_pts = []
+    for j in range(n_pts + 1):
+        theta = -half + petal_span * j / n_pts
+        tr = math.radians(theta)
+        r = 2 * throat_r + 12
+        outer_pts.append((r * math.cos(tr), r * math.sin(tr)))
+    inner_pts = []
+    for j in range(n_pts + 1):
+        theta = -half + petal_span * j / n_pts
+        tr = math.radians(theta)
+        r = 2 * throat_r
+        inner_pts.append((r * math.cos(tr), r * math.sin(tr)))
+    all_pts = outer_pts + inner_pts[::-1]
     
-    base_pts = outer_pts + inner_pts[::-1]
-    top_scale = exit_r / throat_r
-    top_pts = [(pt[0] * top_scale, pt[1] * top_scale) for pt in outer_pts] + \
-              [(pt[0] * top_scale, pt[1] * top_scale) for pt in inner_pts][::-1]
+    base = (
+        cq.Workplane("XY")
+        .polyline(all_pts)
+        .close()
+        .extrude(petal_len)
+    )
     
-    base_wire = cq.Wire.makePolygon([cq.Vector(x, y, 0) for x, y in base_pts])
+    top_pts = [(x * exit_r / throat_r, y * exit_r / throat_r) for x, y in all_pts]
+    base_wire = cq.Wire.makePolygon([cq.Vector(x, y, 0) for x, y in all_pts])
     base_face = cq.Face.makeFromWires(base_wire)
-    
     top_wire = cq.Wire.makePolygon([cq.Vector(x, y, petal_len) for x, y in top_pts])
     top_face = cq.Face.makeFromWires(top_wire)
-    
     try:
-        solid = cq.Solid.makeLoft([base_face, top_face])
-        petal = cq.Workplane("XY").newObject([solid])
+        tapered = cq.Solid.makeLoft([base_face, top_face])
+        result = cq.Workplane("XY").newObject([tapered])
     except:
-        petal = (
-            cq.Workplane("XY")
-            .polyline(base_pts)
-            .close()
-            .extrude(petal_len)
-        )
+        result = base
     
     pivot_pin = (
         cq.Workplane("XY")
         .circle(pivot_pin_d / 2)
         .extrude(petal_len + 2)
     )
+    result = result.union(pivot_pin)
     
     follower_pin = (
         cq.Workplane("XY")
@@ -100,10 +98,17 @@ for i in range(n_petals):
         .circle(2.5 / 2)
         .extrude(6.0)
     )
+    result = result.union(follower_pin)
     
-    sub = petal.union(pivot_pin).union(follower_pin)
-    sub = sub.rotate((0, 0, 0), (0, 0, 1), angle)
-    result = result.union(sub)
+    return result
+
+petals = cq.Workplane("XY").transformed(offset=(0, 0, flg_t))
+for i in range(n_petals):
+    angle = i * 360.0 / n_petals
+    petal = build_petal().rotate((0, 0, 0), (0, 0, 1), angle)
+    petals = petals.union(petal)
+
+result = mounting_ring.union(petals)
 
 sync_ring = (
     cq.Workplane("XY")
@@ -115,13 +120,18 @@ sync_ring = (
 
 for i in range(n_petals):
     angle = i * 360.0 / n_petals
-    slot_cut = (
+    slot = (
         cq.Workplane("XY")
-        .transformed(offset=(pivot_r - 2 - slot_len / 2, -slot_width / 2, flg_t + petal_len + 1))
+        .transformed(
+            offset=((pivot_r - 2) * math.cos(math.radians(angle)),
+                     (pivot_r - 2) * math.sin(math.radians(angle)),
+                     flg_t + petal_len + 1),
+            rotate=(0, 0, angle)
+        )
         .rect(slot_len, slot_width)
         .extrude(sync_ring_t)
     )
-    sync_ring = sync_ring.cut(slot_cut)
+    sync_ring = sync_ring.cut(slot)
 
 result = result.union(sync_ring)
 
