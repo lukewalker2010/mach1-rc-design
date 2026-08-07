@@ -7,74 +7,98 @@ The stabilator is an all-moving tail surface with differential (taileron) contro
 | Parameter | Value |
 |-----------|-------|
 | Total span | 240 mm (120 mm per side) |
-| Root chord | 35 mm |
-| Tip chord | 15 mm |
-| Airfoil | Biconvex 3.5% |
+| Root chord | 90 mm |
+| Tip chord | 38.6 mm |
+| Taper ratio | 0.429 (C_tip/C_root, preserved from design) |
+| Airfoil | Biconvex 6% |
+| Max thickness (root) | 5.4 mm (6% of 90 mm) |
 | Material | T300 carbon-epoxy prepreg [0/±45/0] |
 | Laminate thickness | 0.4 mm (4 plies × 0.1 mm) |
-| Spar | 2 mm carbon rod at 30% chord |
+| Spar | 2.5 mm Ti-6Al-4V rod at 30% chord |
 | Target mass | 55 g (both sides + hardware + servos) |
 
 ---
 
 ## 2. Biconvex Airfoil Coordinates
 
-### 2.1 Root Section (C = 35 mm, t = 1.225 mm)
+### 2.1 Root Section (C = 90 mm, t = 5.400 mm)
 
 Formula: `y(x) = (t/2) × (4 × x/C × (1 − x/C))`
 
-| x/C | x (mm) | y_upper (mm) | y_lower (mm) |
-|-----|--------|-------------|-------------|
-| 0.00 | 0.000 | 0.000 | 0.000 |
-| 0.05 | 1.750 | 0.291 | −0.291 |
-| 0.10 | 3.500 | 0.551 | −0.551 |
-| 0.20 | 7.000 | 0.980 | −0.980 |
-| 0.30 | 10.500 | 1.225 | −1.225 |
-| 0.40 | 14.000 | 1.225 | −1.225 |
-| 0.50 | 17.500 | 1.225 | −1.225 |
-| 0.60 | 21.000 | 1.176 | −1.176 |
-| 0.70 | 24.500 | 1.029 | −1.029 |
-| 0.80 | 28.000 | 0.784 | −0.784 |
-| 0.90 | 31.500 | 0.441 | −0.441 |
-| 0.95 | 33.250 | 0.232 | −0.232 |
-| 1.00 | 35.000 | 0.000 | 0.000 |
-
-### 2.2 Tip Section (C = 15 mm, t = 0.525 mm)
-
-Scaled by factor 15/35 = 0.4286 from root.
+**Max thickness at x/C = 0.50** (corrected — the biconvex parabola peaks at mid-chord, not at 0.30). 21 stations (5% steps), consistent with `STA_ROOT.dxf`.
 
 | x/C | x (mm) | y_upper (mm) | y_lower (mm) |
 |-----|--------|-------------|-------------|
 | 0.00 | 0.000 | 0.000 | 0.000 |
-| 0.10 | 1.500 | 0.236 | −0.236 |
-| 0.20 | 3.000 | 0.420 | −0.420 |
-| 0.30 | 4.500 | 0.525 | −0.525 |
-| 0.40 | 6.000 | 0.525 | −0.525 |
-| 0.50 | 7.500 | 0.525 | −0.525 |
-| 0.60 | 9.000 | 0.504 | −0.504 |
-| 0.70 | 10.500 | 0.441 | −0.441 |
-| 0.80 | 12.000 | 0.336 | −0.336 |
-| 0.90 | 13.500 | 0.189 | −0.189 |
-| 1.00 | 15.000 | 0.000 | 0.000 |
+| 0.05 | 4.500 | 0.513 | −0.513 |
+| 0.10 | 9.000 | 0.972 | −0.972 |
+| 0.15 | 13.500 | 1.377 | −1.377 |
+| 0.20 | 18.000 | 1.728 | −1.728 |
+| 0.25 | 22.500 | 2.025 | −2.025 |
+| 0.30 | 27.000 | 2.268 | −2.268 |
+| 0.35 | 31.500 | 2.457 | −2.457 |
+| 0.40 | 36.000 | 2.592 | −2.592 |
+| 0.45 | 40.500 | 2.673 | −2.673 |
+| 0.50 | 45.000 | 2.700 | −2.700 |
+| 0.55 | 49.500 | 2.673 | −2.673 |
+| 0.60 | 54.000 | 2.592 | −2.592 |
+| 0.65 | 58.500 | 2.457 | −2.457 |
+| 0.70 | 63.000 | 2.268 | −2.268 |
+| 0.75 | 67.500 | 2.025 | −2.025 |
+| 0.80 | 72.000 | 1.728 | −1.728 |
+| 0.85 | 76.500 | 1.377 | −1.377 |
+| 0.90 | 81.000 | 0.972 | −0.972 |
+| 0.95 | 85.500 | 0.513 | −0.513 |
+| 1.00 | 90.000 | 0.000 | 0.000 |
+
+### 2.2 Tip Section (C = 38.6 mm, t = 2.314 mm)
+
+Scaled by factor 38.571/90 = 0.4286 from root (taper ratio 0.429). 21 stations, consistent with `STA_TIP.dxf`.
+
+| x/C | x (mm) | y_upper (mm) | y_lower (mm) |
+|-----|--------|-------------|-------------|
+| 0.00 | 0.000 | 0.000 | 0.000 |
+| 0.05 | 1.929 | 0.220 | −0.220 |
+| 0.10 | 3.857 | 0.417 | −0.417 |
+| 0.15 | 5.786 | 0.590 | −0.590 |
+| 0.20 | 7.714 | 0.741 | −0.741 |
+| 0.25 | 9.643 | 0.868 | −0.868 |
+| 0.30 | 11.571 | 0.972 | −0.972 |
+| 0.35 | 13.500 | 1.053 | −1.053 |
+| 0.40 | 15.429 | 1.111 | −1.111 |
+| 0.45 | 17.357 | 1.146 | −1.146 |
+| 0.50 | 19.286 | 1.157 | −1.157 |
+| 0.55 | 21.214 | 1.146 | −1.146 |
+| 0.60 | 23.143 | 1.111 | −1.111 |
+| 0.65 | 25.071 | 1.053 | −1.053 |
+| 0.70 | 27.000 | 0.972 | −0.972 |
+| 0.75 | 28.929 | 0.868 | −0.868 |
+| 0.80 | 30.857 | 0.741 | −0.741 |
+| 0.85 | 32.786 | 0.590 | −0.590 |
+| 0.90 | 34.714 | 0.417 | −0.417 |
+| 0.95 | 36.643 | 0.220 | −0.220 |
+| 1.00 | 38.571 | 0.000 | 0.000 |
 
 ### 2.3 Intermediate Sections
 
 At any span station z (0 ≤ z ≤ 120 mm):
 
 ```
-C(z) = 35 − (35 − 15) × z/120 = 35 − 0.1667z  mm
-t(z) = 1.225 × (1 − 0.4762 × z/120)  mm
+C(z) = 90 − (90 − 38.571) × z/120 = 90 − 0.428571z  mm
+t(z) = 0.06 × C(z) = 5.400 − 0.025714z  mm        (t/c constant = 6%)
 ```
+
+> **Corrected (D22):** the former `t(z) = 1.225 × (1 − 0.4762 × z/120)` did not reproduce the tip — it gave t(120) = 0.642 mm against a 0.525 mm tip. The corrected interpolation scales thickness with chord (constant 6% t/c), so t(120) = 0.06 × 38.571 = 2.314 mm, exactly the tip section. Mid-station (`STA_MID`, z = 60 mm) is generated from this formula with consistent x/y scaling.
 
 | z (mm) | C (mm) | t (mm) | t/2 (mm) |
 |--------|--------|--------|---------|
-| 0 (root) | 35.0 | 1.225 | 0.613 |
-| 20 | 31.7 | 1.123 | 0.561 |
-| 40 | 28.3 | 1.021 | 0.510 |
-| 60 | 25.0 | 0.919 | 0.460 |
-| 80 | 21.7 | 0.817 | 0.408 |
-| 100 | 18.3 | 0.715 | 0.357 |
-| 120 (tip) | 15.0 | 0.525 | 0.263 |
+| 0 (root) | 90.0 | 5.400 | 2.700 |
+| 20 | 81.4 | 4.886 | 2.443 |
+| 40 | 72.9 | 4.371 | 2.186 |
+| 60 | 64.3 | 3.857 | 1.929 |
+| 80 | 55.7 | 3.343 | 1.671 |
+| 100 | 47.1 | 2.829 | 1.414 |
+| 120 (tip) | 38.6 | 2.314 | 1.157 |
 
 ---
 
@@ -88,7 +112,7 @@ t(z) = 1.225 × (1 − 0.4762 × z/120)  mm
 
 | Dimension | Value |
 |-----------|-------|
-| Length (chordwise) | 45 mm (35 mm root + 10 mm margin) |
+| Length (chordwise) | 100 mm (90 mm root + 10 mm margin) |
 | Width (spanwise) | 130 mm (120 mm + 10 mm margin) |
 | Height (each half) | 8 mm |
 | Material | 6061-T6 aluminium |
@@ -96,7 +120,7 @@ t(z) = 1.225 × (1 − 0.4762 × z/120)  mm
 
 ### 3.3 Mould Features
 
-- Spar rod locating groove: 2.0 mm wide × 1.0 mm deep at 30% chord
+- Spar rod locating groove: 2.5 mm wide × 1.25 mm deep at 30% chord (Ti 2.5 mm spar)
 - Bearing pocket inserts: ∅8.2 mm × 3.2 mm deep at z = 30 mm and z = 72 mm
 - Parting line: midplane (y = 0)
 
@@ -121,7 +145,7 @@ t(z) = 1.225 × (1 − 0.4762 × z/120)  mm
 
 - Cut 4 plies per side from T300 prepreg (0.1 mm cured thickness)
 - Ply shape: trapezoid matching planform + 10 mm trim allowance
-- Spar rod: 2 mm × 110 mm pultruded carbon, scarf-bevel last 15 mm
+- Spar rod: 2.5 mm × 110 mm Ti-6Al-4V rod, scarf-bevel last 15 mm
 
 ### 4.2 Layup Sequence (per side)
 
@@ -224,7 +248,7 @@ Step 13: Set servo centre, verify ±25° deflection
 | Component | Qty | Unit (g) | Total (g) |
 |-----------|-----|---------|-----------|
 | Stabilator laminate (per side) | 2 | 2.5 | 5.0 |
-| Spar rod (per side) | 2 | 0.55 | 1.1 |
+| Ti spar (2.5 mm, per side) | 2 | 2.4 | 4.8 |
 | Epoxy fill | 2 | 0.5 | 1.0 |
 | Bearings (4×8×3) | 4 | 1.0 | 4.0 |
 | Control horn (G10) | 2 | 0.8 | 1.6 |
@@ -238,7 +262,9 @@ Step 13: Set servo centre, verify ±25° deflection
 | Hinge pins (steel) | 4 | 1.5 | 6.0 |
 | E-clips | 4 | 0.03 | 0.12 |
 | Bracket screws | 8 | 0.15 | 1.2 |
-| **Total** | | | **55.1 g** |
+| **Total** | | | **58.8 g** |
+
+> Note: spar row updated for the 2.5 mm Ti-6Al-4V spar (density 4.43 g/cm³, ~2.4 g each); remaining rows are unchanged estimates.
 
 ---
 

@@ -4,96 +4,117 @@
 
 The fuselage uses a **split female mould** (LH and RH halves) bolted at a flange parting line. The mould is CNC-machined from RenShape 460 tooling board or MDF + tooling gelcoat.
 
+> **Correction (2026-08-06, audit D3):** this file previously carried the 2.20 m / 200 mm-OD baseline data (spindle nose `R = 100·sin(πx/0.8)`, waist pinch centred at x = 1.00 m with the wrong 22 mm factor, and a 1.80–2.20 m boat tail to R = 17.5 mm). The mould coordinates are **re-derived below from the authoritative re-baselined body law** (18 §3.1, disposition D3). Regenerate any dependent DXF/STL/toolpath from §1.5 — do not reuse the old tables.
+
 ---
 
-## 1. Fuselage Profile — Upper/Lower Outline
+## 1. Fuselage Profile — Corrected Body Law
 
-The mould cavity is defined by the fuselage outer diameter at each station. The parting line runs horizontally through the aircraft centreline (top-bottom split).
+The mould cavity is defined by the fuselage outer radius R(x) at each station. The parting line runs horizontally through the aircraft centreline (top-bottom split). Origin = fuselage nose tip, +X aft.
 
-### 1.1 Nose Section (Ogive, 0 ≤ x ≤ 0.40 m)
+### 1.0 Regeneration formula (authoritative)
 
-Formula: `R(x) = 100 × sin(π × x / 0.800)` mm
+```
+R(x) [m], x in metres, stations measured from the nose tip:
 
-| x (mm) | R_upper (mm) | R_lower (mm) | Diameter (mm) |
-|--------|-------------|-------------|---------------|
-| 0 | 0.000 | 0.000 | 0.0 |
-| 20 | 7.65 | 7.65 | 15.3 |
-| 40 | 15.00 | 15.00 | 30.0 |
-| 60 | 21.82 | 21.82 | 43.6 |
-| 80 | 27.86 | 27.86 | 55.7 |
-| 100 | 32.99 | 32.99 | 66.0 |
-| 120 | 37.10 | 37.10 | 74.2 |
-| 140 | 40.10 | 40.10 | 80.2 |
-| 160 | 41.96 | 41.96 | 83.9 |
-| 180 | 42.66 | 42.66 | 85.3 |
-| 200 | 42.23 | 42.23 | 84.5 |
-| 250 | 38.84 | 38.84 | 77.7 |
-| 300 | 30.88 | 30.88 | 61.8 |
-| 350 | 17.68 | 17.68 | 35.4 |
-| 400 | 0.000 | 0.000 | 0.0 |
+  R(x) = 0.0925 · sin(π·x / 0.85)                             x ∈ [0.00, 0.85]  (nose ogive)
+  R(x) = 0.086 · [1 − cos(π·(x − 0.85) / 0.20)] / 2           x ∈ [0.85, 1.05]  (pinch → waist R = 0.086 at x = 1.05)
+  R(x) = 0.086 + 0.0065 · [1 − cos(π·(x − 1.05) / 0.34)] / 2  x ∈ [1.05, 1.39]  (recover → R = 0.0925 at x = 1.39)
+  R(x) = 0.0925                                                x ∈ [1.39, 1.80]  (engine / afterburner bay, constant)
+  R(x) = 0.0925 − (0.0925 − 0.055) / 0.80 · (x − 1.80)         x ∈ [1.80, 2.60]  (boat tail → AB nozzle fairing, R → 0.055)
 
-### 1.2 Parallel Section (0.40 ≤ x ≤ 1.80 m)
+  Notes:
+  · Max body radius R = 0.0925 m (185 mm OD) at x = 0.425 m and from 1.39–1.80 m.
+  · The ogive passes through R ≈ 0 at x = 0.85 m (nose forebody closes at the
+    wing carry-through interface, stations 0.95–1.15 m per I-04).
+  · Waist minimum R = 0.086 m (172 mm OD) at x = 1.05 m.
+  · The 0.85–1.05 and 1.05–1.39 transitions are smooth cosine half-waves
+    (zero slope at each end) so the mould surface has no tangent breaks.
+  · Boat tail is linear from R = 0.0925 m @ 1.80 m to R = 0.055 m @ 2.60 m
+    (opening into the afterburner / C-D nozzle fairing per 18 §2, D3).
+```
 
-R = 100 mm constant (200 mm diameter), except waist region.
+### 1.1 Nose ogive (0 ≤ x ≤ 0.85 m)
 
-| x (mm) | R (mm) | Notes |
-|--------|--------|-------|
-| 400 | 100.0 | Start parallel |
-| 500 | 100.0 | BH1 at 100mm |
-| 600 | 100.0 | BH3 at 600mm |
-| 700 | 100.0 | |
-| 800 | 100.0 | Waist start |
-| 850 | 100.0 | BH4 waist ring |
-| 875 | 99.3 | |
-| 900 | 97.3 | |
-| 925 | 94.5 | |
-| 950 | 91.8 | |
-| 975 | 89.8 | |
-| 1000 | 89.0 | Waist min |
-| 1025 | 89.8 | |
-| 1050 | 91.8 | |
-| 1075 | 94.5 | |
-| 1100 | 97.3 | BH5 |
-| 1125 | 99.3 | |
-| 1150 | 100.0 | Waist end |
-| 1200 | 100.0 | |
-| 1400 | 100.0 | BH6 engine fwd |
-| 1600 | 100.0 | BH7 engine aft |
-| 1800 | 100.0 | Boat tail start |
+`R(x) = 0.0925 · sin(π·x / 0.85)` m — maximum R = 92.5 mm at x = 0.425 m, R → 0 at x = 0.85 m. (Former nose table was a 100 mm × 0.80 m spindle — wrong amplitude, wrong length, wrong scale.)
 
-### 1.3 Boat Tail (1.80 ≤ x ≤ 2.20 m)
+### 1.2 Waist pinch & recovery (0.85 ≤ x ≤ 1.39 m)
 
-Formula: `R(x) = 100 − (x − 1800) × tan(11.6°)` mm
+Pinch to the waist minimum R = 86 mm at x = 1.05 m (172 mm OD), then recover to full R = 92.5 mm at x = 1.39 m. (Former waist was centred at x = 1.00 m with a 22 mm cosine factor on the old 200 mm body — off-station, wrong factor.)
 
-| x (mm) | R (mm) | Diameter (mm) |
-|--------|--------|---------------|
-| 1800 | 100.0 | 200.0 |
-| 1850 | 93.1 | 186.2 |
-| 1900 | 86.2 | 172.4 |
-| 1950 | 79.3 | 158.6 |
-| 2000 | 72.4 | 144.8 |
-| 2050 | 65.5 | 131.0 |
-| 2100 | 58.6 | 117.2 |
-| 2150 | 51.7 | 103.4 |
-| 2200 | 44.8 | 89.6 |
+### 1.3 Engine / afterburner bay (1.39 ≤ x ≤ 1.80 m)
 
-Wait — the spec says exhaust nozzle OD is 35 mm at x = 2.20 m. Let me recalculate.
+Constant R = 92.5 mm (185 mm OD). Engine mount ring at x = 1.20 m per 18 §3.1.
 
-From spec: R(2.20) = 17.5 mm. So the boat tail goes from R=100 at x=1.80 to R=17.5 at x=2.20.
+### 1.4 Boat tail → AB nozzle fairing (1.80 ≤ x ≤ 2.60 m)
 
-`R(x) = 100 − (x − 1800) × (100 − 17.5) / 400 = 100 − (x − 1800) × 0.20625`
+Linear taper R 92.5 → 55 mm over 0.80 m (half-angle = arctan(37.5/800) ≈ 2.7°). (The two former boat-tail tables — 200→35 mm over 0.40 m and the "35 mm nozzle" tailcone — are void; the tailcone is replaced by the AB duct + nozzle fairing per 18 §3.1.)
 
-| x (mm) | R (mm) | Diameter (mm) |
-|--------|--------|---------------|
-| 1800 | 100.0 | 200.0 |
-| 1850 | 89.7 | 179.4 |
-| 1900 | 79.4 | 158.8 |
-| 1950 | 69.1 | 138.2 |
-| 2000 | 58.8 | 117.6 |
-| 2050 | 48.5 | 97.0 |
-| 2100 | 38.2 | 76.4 |
-| 2150 | 27.9 | 55.8 |
-| 2200 | 17.5 | 35.0 |
+### 1.5 Master station / radius table (CNC mould stations)
+
+Stations every 50 mm from 0 to 2600 mm, computed from the formula above.
+
+| x (mm) | R (mm) | OD (mm) |
+|--------|--------|---------|
+| 0 | 0.00 | 0.00 |
+| 50 | 17.00 | 33.99 |
+| 100 | 33.41 | 66.83 |
+| 150 | 48.69 | 97.39 |
+| 200 | 62.32 | 124.63 |
+| 250 | 73.82 | 147.63 |
+| 300 | 82.80 | 165.61 |
+| 350 | 88.97 | 177.94 |
+| 400 | 92.11 | 184.21 |
+| 450 | 92.11 | 184.21 |
+| 500 | 88.97 | 177.94 |
+| 550 | 82.80 | 165.61 |
+| 600 | 73.82 | 147.63 |
+| 650 | 62.32 | 124.63 |
+| 700 | 48.69 | 97.39 |
+| 750 | 33.41 | 66.83 |
+| 800 | 17.00 | 33.99 |
+| 850 | 0.00 | 0.00 |
+| 900 | 12.59 | 25.19 |
+| 950 | 43.00 | 86.00 |
+| 1000 | 73.41 | 146.81 |
+| 1050 | 86.00 | 172.00 |
+| 1100 | 86.34 | 172.68 |
+| 1150 | 87.29 | 174.58 |
+| 1200 | 88.65 | 177.31 |
+| 1250 | 90.14 | 180.28 |
+| 1300 | 91.44 | 182.88 |
+| 1350 | 92.28 | 184.56 |
+| 1400 | 92.50 | 185.00 |
+| 1450 | 92.50 | 185.00 |
+| 1500 | 92.50 | 185.00 |
+| 1550 | 92.50 | 185.00 |
+| 1600 | 92.50 | 185.00 |
+| 1650 | 92.50 | 185.00 |
+| 1700 | 92.50 | 185.00 |
+| 1750 | 92.50 | 185.00 |
+| 1800 | 92.50 | 185.00 |
+| 1850 | 90.16 | 180.31 |
+| 1900 | 87.81 | 175.62 |
+| 1950 | 85.47 | 170.94 |
+| 2000 | 83.12 | 166.25 |
+| 2050 | 80.78 | 161.56 |
+| 2100 | 78.44 | 156.88 |
+| 2150 | 76.09 | 152.19 |
+| 2200 | 73.75 | 147.50 |
+| 2250 | 71.41 | 142.81 |
+| 2300 | 69.06 | 138.13 |
+| 2350 | 66.72 | 133.44 |
+| 2400 | 64.38 | 128.75 |
+| 2450 | 62.03 | 124.06 |
+| 2500 | 59.69 | 119.38 |
+| 2550 | 57.34 | 114.69 |
+| 2600 | 55.00 | 110.00 |
+
+**Checkpoints:** R(425) = 92.5 mm (max ogive) · R(850) ≈ 0 (ogive closure) · R(1050) = 86.0 mm (waist min, 172 mm OD) · R(1390) = R(1800) = 92.5 mm (185 mm OD) · R(2600) = 55.0 mm.
+
+### 1.6 Mould draft (D15)
+
+CNC moulds are machined from these stations with **0.5–1° draft added** on the parting-line faces (or the tool is split fore/aft) — the former 2.2 m zero-draft female mould is not releasable. Draft angle per D15; add it to the tooling surface normal, not to the body law R(x) in §1.5.
 
 ---
 
@@ -101,29 +122,29 @@ From spec: R(2.20) = 17.5 mm. So the boat tail goes from R=100 at x=1.80 to R=17
 
 ### 2.1 Parting Line
 
-The mould splits at the horizontal centreline (y = 0). Each half is a female cavity that wraps 180° around the fuselage.
+The mould splits at the horizontal centreline (y = 0). Each half is a female cavity that wraps 180° around the fuselage. (Unchanged.)
 
 ### 2.2 Mould Bounding Box (each half)
 
 | Dimension | Value | Notes |
 |-----------|-------|-------|
-| Length (x) | 2300 mm | Nose to exhaust, +50mm margin |
-| Width (y) | 250 mm | Radius 100 + flange + margin |
-| Height (z) | 130 mm | Radius 100 + clearance |
+| Length (x) | 2650 mm | Nose to AB nozzle fairing (2600 mm) + 50 mm margin |
+| Width (y) | 230 mm | Max OD 185 mm + 2 × 20 mm flange + margin |
+| Height (z) | 115 mm | Radius 92.5 mm + wall/clearance |
 | Flange width | 20 mm | At parting line |
 
 ### 2.3 Flange Detail
 
 ```
     CROSS-SECTION AT PARTING LINE (x = 1.0 m)
-    
+
     Upper mould half
     ┌──────────────────────────────────────┐
     │         ╭──────────╮                 │
     │        ╱            ╲                │
     │       ╱   Cavity     ╲               │
-    │      ╱    R = 89 mm   ╲              │
-    │     ╱                   ╲             │
+    │      ╱   R = 73.4 mm  ╲              │
+    │     ╱                   ╲            │
     │────╱─────────────────────╲────────────│  ← Parting line
     │    │    Flange (20mm)     │            │
     │    │    4 × M6 bolts      │            │
@@ -131,12 +152,14 @@ The mould splits at the horizontal centreline (y = 0). Each half is a female cav
     │         ╭──────────╮                 │
     │        ╱            ╲                │
     │       ╱   Cavity     ╲               │
-    │      ╱    R = 89 mm   ╲              │
-    │     ╱                   ╲             │
+    │      ╱   R = 73.4 mm  ╲              │
+    │     ╱                   ╲            │
     │────╱─────────────────────╲────────────│
     └──────────────────────────────────────┘
     Lower mould half
 ```
+
+(Cavity radius at x = 1.0 m is 73.4 mm per the §1.5 table.)
 
 ### 2.4 CNC Machining Sequence
 
@@ -147,51 +170,62 @@ The mould splits at the horizontal centreline (y = 0). Each half is a female cav
 5. **Seal:** Tooling gelcoat or epoxy sealer
 6. **Release:** Frekote 770-NC
 
-**Estimated CNC time:** 12-16 hours per half (3-axis mill)
+**Estimated CNC time:** 14–18 hours per half (3-axis mill)
 
 ---
 
 ## 3. Waist Region — Detailed Coordinates
 
-The area-ruled waist (x = 0.85 to 1.15 m) is the most critical section for CNC machining.
+The corrected waist spans the ogive closure through the wing carry-through and into the engine bay (x = 0.85 to 1.39 m). It is the most critical region for CNC machining.
 
-### 3.1 Waist Profile (Diameter)
+### 3.1 Waist Profile (Radius, corrected)
 
-Formula: `D(x) = 200 − 22 × 0.5 × [1 − cos(2π × (x − 850) / 300)]` mm
+```
+Pinch:    R(x) = 86 × [1 − cos(π·(x − 850) / 200)] / 2       x ∈ [850, 1050]
+Recovery: R(x) = 86 + 6.5 × [1 − cos(π·(x − 1050) / 340)] / 2  x ∈ [1050, 1390]
+```
 
-| x (mm) | Factor | D (mm) | R (mm) |
-|--------|--------|--------|--------|
-| 850 | 0.000 | 200.0 | 100.0 |
-| 860 | 0.020 | 199.6 | 99.8 |
-| 870 | 0.079 | 198.3 | 99.1 |
-| 880 | 0.172 | 196.2 | 98.1 |
-| 890 | 0.300 | 193.4 | 96.7 |
-| 900 | 0.450 | 190.1 | 95.1 |
-| 910 | 0.613 | 186.5 | 93.3 |
-| 920 | 0.772 | 183.0 | 91.5 |
-| 930 | 0.901 | 180.2 | 90.1 |
-| 940 | 0.981 | 178.4 | 89.2 |
-| 950 | 1.000 | 178.0 | 89.0 |
-| 960 | 0.981 | 178.4 | 89.2 |
-| 970 | 0.901 | 180.2 | 90.1 |
-| 980 | 0.772 | 183.0 | 91.5 |
-| 990 | 0.613 | 186.5 | 93.3 |
-| 1000 | 0.450 | 190.1 | 95.1 |
-| 1010 | 0.300 | 193.4 | 96.7 |
-| 1020 | 0.172 | 196.2 | 98.1 |
-| 1030 | 0.079 | 198.3 | 99.1 |
-| 1040 | 0.020 | 199.6 | 99.8 |
-| 1050 | 0.000 | 200.0 | 100.0 |
+| x (mm) | R (mm) | OD (mm) | x (mm) | R (mm) | OD (mm) |
+|--------|--------|---------|--------|--------|---------|
+| 850 | 0.00 | 0.00 | 1000 | 73.41 | 146.81 |
+| 860 | 0.53 | 1.06 | 1010 | 77.79 | 155.58 |
+| 870 | 2.10 | 4.21 | 1020 | 81.31 | 162.63 |
+| 880 | 4.69 | 9.37 | 1030 | 83.90 | 167.79 |
+| 890 | 8.21 | 16.42 | 1040 | 85.47 | 170.94 |
+| 900 | 12.59 | 25.19 | 1050 | 86.00 | 172.00 |
+| 910 | 17.73 | 35.45 | 1060 | 86.01 | 172.03 |
+| 920 | 23.48 | 46.96 | 1070 | 86.06 | 172.11 |
+| 930 | 29.71 | 59.42 | 1080 | 86.12 | 172.25 |
+| 940 | 36.27 | 72.55 | 1090 | 86.22 | 172.44 |
+| 950 | 43.00 | 86.00 | 1100 | 86.34 | 172.68 |
+| 960 | 49.73 | 99.45 | 1110 | 86.49 | 172.97 |
+| 970 | 56.29 | 112.58 | 1120 | 86.66 | 173.31 |
+| 980 | 62.52 | 125.04 | 1130 | 86.85 | 173.70 |
+| 990 | 68.27 | 136.55 | 1140 | 87.06 | 174.12 |
+| | | | 1150 | 87.29 | 174.58 |
 
 ---
 
 ## 4. Bulkhead Flat Patterns — CNC/Waterjet Cutting
 
+> **⚠️ Legacy data:** the bulkhead OD values below are from the pre-re-baseline 2.20 m / 200 mm body. The BH schedule and ODs are owned by E1/E3 (structure) and must be re-derived from the **§1.5 master radius table** before cutting. The reference body-law radius at each shown station is listed; where the old station sits on the corrected body a new OD applies, and BH4 (x = 850 mm) is invalid — it lands on the ogive closure (R ≈ 0) and must be re-stationed inside the carry-through box (0.95–1.15 m, I-04) by the owning engineer.
+
+| BH# | x (mm) | Legacy OD (mm) | Body-law R @ x (mm) | Corrected OD (mm) |
+|-----|--------|----------------|---------------------|-------------------|
+| BH1 | 100 | 78 | 33.41 | 66.8 |
+| BH2 | 350 | 193 | 88.97 | 177.9 |
+| BH3 | 600 | 200 | 73.82 | 147.6 |
+| BH4 | 850 | 200→178 | 0.00 (ogive closure) | n/a — re-station |
+| BH5 | 1100 | 194 | 86.34 | 172.7 |
+| BH6 | 1400 | 200 | 92.50 | 185.0 |
+| BH7 | 1600 | 200 | 92.50 | 185.0 |
+| BH8 | 2050 | 97 | 80.78 | 161.6 |
+
 ### 4.1 BH1 — Nose Former (x = 100 mm)
 
 | Feature | Value |
 |---------|-------|
-| OD | 78 mm |
+| OD | 66.8 mm (was 78 mm) |
 | ID (centre hole) | 20 mm |
 | Material | T300 carbon [0/90]₂ (4 ply) |
 | Thickness | 0.8 mm |
@@ -202,7 +236,7 @@ Formula: `D(x) = 200 − 22 × 0.5 × [1 − cos(2π × (x − 850) / 300)]` mm
 
 | Feature | Value |
 |---------|-------|
-| OD | 193 mm |
+| OD | 177.9 mm (was 193 mm) |
 | Centre hole | None (solid) |
 | Wiring cutouts | 2 × 30×20 mm at 45° |
 | M3 inserts | 4 × M3 at ±45°, 80 mm PCD |
@@ -213,7 +247,7 @@ Formula: `D(x) = 200 − 22 × 0.5 × [1 − cos(2π × (x − 850) / 300)]` mm
 
 | Feature | Value |
 |---------|-------|
-| OD | 200 mm |
+| OD | 147.6 mm (was 200 mm) |
 | AN-4 feed-through | 6.35 mm ID at 6 o'clock |
 | Seal | 0.1 mm aluminium foil bonded to inner face |
 | Material | T300 carbon [0/90]₂ (4 ply) |
@@ -223,11 +257,8 @@ Formula: `D(x) = 200 − 22 × 0.5 × [1 − cos(2π × (x − 850) / 300)]` mm
 
 | Feature | Value |
 |---------|-------|
-| OD forward | 200 mm |
-| OD aft | 178 mm |
-| Taper | Linear over 1.2 mm thickness |
+| OD forward | **re-station required** — x = 850 mm sits on the ogive closure (R ≈ 0), not the waist ring. Waist ring must sit inside the carry-through box (0.95–1.15 m, I-04). |
 | M6 inserts | 4 × M6 at ±45°, 120 mm PCD |
-| Doubler pad | 2 mm local at bolt locations |
 | Material | T300 carbon [0/90/+45/−45] (6 ply) |
 | Thickness | 1.2 mm |
 
@@ -235,8 +266,7 @@ Formula: `D(x) = 200 − 22 × 0.5 × [1 − cos(2π × (x − 850) / 300)]` mm
 
 | Feature | Value |
 |---------|-------|
-| OD forward | 194 mm |
-| OD aft | 194 mm (constant) |
+| OD | 172.7 mm (was 194 mm) |
 | M6 inserts | 4 × M6 at ±45°, 120 mm PCD |
 | Material | T300 carbon [0/90/+45/−45] (6 ply) |
 | Thickness | 1.2 mm |
@@ -245,7 +275,7 @@ Formula: `D(x) = 200 − 22 × 0.5 × [1 − cos(2π × (x − 850) / 300)]` mm
 
 | Feature | Value |
 |---------|-------|
-| OD | 200 mm |
+| OD | 185.0 mm (was 200 mm) |
 | Centre hole | 90 mm (engine pass-through) |
 | Bracket pads | 4 × at ±45°, M5 tapped |
 | Material | T300 carbon [0/90]₂ (4 ply) |
@@ -255,7 +285,7 @@ Formula: `D(x) = 200 − 22 × 0.5 × [1 − cos(2π × (x − 850) / 300)]` mm
 
 | Feature | Value |
 |---------|-------|
-| OD | 200 mm |
+| OD | 185.0 mm (was 200 mm) |
 | Centre hole | 90 mm |
 | Bracket pads | 4 × at ±45°, M5 tapped |
 | Material | T300 carbon [0/90]₂ (4 ply) |
@@ -265,7 +295,7 @@ Formula: `D(x) = 200 − 22 × 0.5 × [1 − cos(2π × (x − 850) / 300)]` mm
 
 | Feature | Value |
 |---------|-------|
-| OD | 97 mm |
+| OD | 161.6 mm (was 97 mm) |
 | ID | 60 mm (thrust ring) |
 | Material | T300 carbon [0/90]₂ (4 ply) |
 | Thickness | 1.0 mm |
