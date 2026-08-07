@@ -1,18 +1,20 @@
 # Afterburner for JetCat P550-PRO — Mechanical Design
 
+> **CORRECTED 2026-08-06 per 18 §2 and 21: mass flow at M1/10kft is 1.10 kg/s (not 0.69); see 21_afterburner_bench_program.md.** Mechanical dimensions, materials and the component stack are **unchanged**. Only mass-flow-dependent numbers (thrust claim, fuel flow, cooling flow) below are corrected. Interface I-03 dimensions unchanged.
+
 ## Design Overview
 
 | Parameter | Value | Notes |
 |-----------|-------|-------|
-| Thrust boost | 30–50% (390–450 N wet) | At M1/10kft, 300 N dry baseline |
+| Thrust boost | +75–95% wet (451–497 N net) | At M1/10kft, ṁ=1.10 kg/s, T7=1700–1900 K (21 §1); dry 257 N baseline (18 §2.1) |
 | Fuel | Jet A1 | Same as main engine |
 | Max AB duration | 20 s | Thermal limit of Inconel liner |
-| Total weight | ≤ 1.0 kg | Target (est. 0.85 kg) |
+| Total weight | ≤ 1.0 kg | Target (est. 0.85 kg; see 17 §2d corrected — 0.97 kg with restored pump) |
 | Fuselage dia | ≤ 200 mm | Fits existing airframe |
 | Engine mount | 4× M3 on 45 mm PCD | Direct to P550-PRO exhaust flange |
-| EGT range | 550–680 °C | Pre-AB gas temperature |
+| EGT range | 550–680 °C (partial power); ~1000 K (727 °C) at M1 full dry | Pre-AB gas temperature; 18 §2.1 |
 | O₂ in exhaust | ~14 % | Supports sustained combustion |
-| Mass flow | 0.93 kg/s (static), 0.69 kg/s (M1/10kft) |
+| Mass flow | 0.93 kg/s (static SL), 1.10 kg/s (M1/10kft) | corrected-flow model (18 §2.1) — NOT 0.69 |
 
 ## Component Stack (Engine Aft → Forward)
 
@@ -66,17 +68,17 @@
 - Wet throat: 55 mm dia → Area = π/4 × 55² = 2376 mm²
 - Area ratio: 2376/1590 = 1.49 (49% increase)
 
-At M1/10kft (0.69 kg/s, ~350°C pre-AB):
-- AB adds heat raising exhaust temp to ~1200°C
-- Volume increase ~ (1200+273)/(680+273) ≈ 1.56×
-- 49% area increase matches the volumetric expansion
+At M1/10kft (1.10 kg/s, ~1000 K pre-AB per 18 §2.1):
+- AB raises exhaust temp to T7 = 1800 K (design)
+- Volume increase ~ 1800/1000 ≈ 1.80×
+- **Nozzle-matching flag:** the 1.49× throat area increase (45→55 mm) was sized on the old 1.56× model; the corrected ratio (1.80×) must be re-verified on the bench (21 §4 Phase 1.5). Interface I-03 dimensions unchanged.
 
 ### Cooling Air Flow
 
 - Annulus area: π/4 × (90² - 82²) = π/4 × (8100 - 6724) = 1080 mm²
-- At ~5% bleed from compressor: 0.05 × 0.69 = 0.0345 kg/s
-- Velocity in annulus: 0.0345 / (1.2 × 1080e-6) ≈ 27 m/s
-- Film cooling: 20 × 1 mm holes → 15.7 mm² total, choked flow
+- At ~5% bleed from compressor: 0.05 × 1.10 = 0.055 kg/s (corrected to ṁ = 1.10 kg/s, 18 §2.1)
+- Velocity in annulus: 0.055 / (1.2 × 1080e-6) ≈ 42 m/s
+- Film cooling: **105–115 × 1 mm holes** (corrected from 20; bleed 2.5% = 0.0275 kg/s → ~111 holes at 2.47e-4 kg/s choked per hole, 21 §3). The 20-hole row is insufficient at corrected flow.
 
 ### Weight Budget
 
@@ -1017,7 +1019,7 @@ color("DarkGray", 0.5)
 Compressor bleed (5%) → fuselage scoop → shell inlet (z=120 mm)
     → 5 mm annular gap (between liner OD and shell ID)
     → flows aft through annulus
-    → exits through 20× 1 mm film cooling holes at liner inlet
+    → exits through 105–115 × 1 mm film cooling holes at liner inlet
     → forms protective film on liner ID wall
     → additional cooling exits at liner aft end into nozzle
 ```
@@ -1043,23 +1045,25 @@ The floating liner mounting + bellows section at the aft end accommodates this d
 
 ### Thrust Boost Calculation
 
-- Dry thrust (M1/10kft): 300 N
-- AB temperature rise: 680°C → 1200°C (pre-AB across fuel)
-- Thrust ratio ≈ √(T_afterburner / T_dry) ≈ √(1473/953) ≈ 1.24
-- Additional thrust from fuel momentum: ~5%
-- Total boost: ~30%
-- At static conditions with richer mixture: up to 50% boost
+- Dry net thrust (M1/10kft): 257 N (18 §2.1, 13:126) — not 300 N
+- AB temperature rise: 1000 K → 1800 K (T7 = T7_AB, design)
+- Thrust ratio ≈ √(T7/T5) ≈ √(1800/1000) ≈ 1.34
+- Net wet thrust (ṁ = 1.10 kg/s, 18 §2.1): gross 835 N − ram 361 N = **474 N** (design)
+- Total boost over dry 257 N: **+85%** (1700 K → +75%, 1900 K → +94%; 21 §1)
+- At static conditions (ṁ = 0.95 kg/s): F_s ≈ 721 N at 1800 K
 
 ### Fuel Flow
 
-AB fuel flow: ~0.015–0.025 kg/s Jet A1
-- At 20 s max duration: 0.3–0.5 kg (370–620 mL) fuel consumed
-- 6 × 0.5 mm orifices at 3 bar: ~0.020 kg/s total
+AB fuel flow: **~24 g/s static-SL, 27.3 g/s at M1/10kft** (energy balance, LHV 43 MJ/kg, cp 1200, η 0.90; T5 = 1000 K; 21 §2)
+- At 20 s max duration: **546 g ≈ 674 mL (AB only)** consumed
+- 6 × 0.5 mm orifices at 4 bar: ~28 g/s total (√ΔP scale of the 3-bar 20 g/s point) — meets the 27.3 g/s requirement with margin
+- Pump: dedicated Speck ZY-4S-12V (15), 4 bar / 44 g/s — 1.61× margin
 
 ### Specific Fuel Consumption
 
-- Dry SFC: ~0.45 kg/(N·h)
-- Wet SFC: ~0.65 kg/(N·h) (higher due to AB)
+- Dry SFC (datasheet, SL): ~0.144 kg/(N·h) (13:16)
+- Dry SFC at M1/10kft (257 N, engine ~22 g/s): ~0.31 kg/(N·h)
+- Wet SFC (M1, 1800 K): (22 + 27 g/s) ÷ 474 N ≈ **0.38 kg/(N·h)**
 - Penalty acceptable for 20 s bursts
 
 ---
