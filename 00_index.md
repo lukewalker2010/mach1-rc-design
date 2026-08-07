@@ -1,9 +1,9 @@
 # Mach 1 RC Aircraft — Design Package Index
 
-**Project:** Path 2 — P550-PRO + C-D Nozzle + Cd 0.166
-**Status:** Design complete + Afterburner Package
-**Date:** July 2026
-**Documents:** 14 files + 6 OpenSCAD drawings, 200,000+ bytes
+**Project:** Path 2 — P550-PRO + Afterburner + Level Mach 1
+**Status:** ⚠️ RE-BASELINED (2026-08-06) — docs 01–17 superseded where they contradict `18_program_requirements.md`
+**Date:** August 2026
+**Documents:** 20 files + 6 OpenSCAD drawings + 5 CadQuery STEP generators
 
 ---
 
@@ -39,26 +39,29 @@
 | 15 | **`15_afterburner_fuel_ignition.md`** | Speck ZY-4S-12V pump, Bosch EV14 injector, NGK CM-6 + RCEXL CDI, plumbing | 6 |
 | 16 | **`16_afterburner_electronics.md`** | RP2040 (Pi Pico), MAX6675 EGT, Hamamatsu G5842 UV sensor, 7-state machine, MAVLink | 8 |
 | 17 | **`17_afterburner_thermal_integration.md`** | 1800K flame, 453 kW/m² flux, 65 film cooling holes, YSZ TBC, 830g, 4-phase test | 8 |
+| 18 | **`18_program_requirements.md`** | **AUTHORITATIVE RE-BASELINE**: mission rules (M1 level 5 s, air-breathing, land intact, same-day repeat, MTOW≤25 kg, M&V protocol), thrust/drag closure (single P550+AB wet 465 N vs hump drag ≤430 N), corrected geometry/CG, flight test plan, full audit dispositions | — |
+| — | **`AGENTS.md`** | Master AI-tool instructions: baselines, coordinate system, quality gates, environment | — |
+| — | **`INTERFACES.md`** | Subsystem Interface Control: 12 mating interfaces (I-01…I-12), change procedure | — |
 
 ---
 
-## Key Parameters
+## Key Parameters (re-baseline per 18_program_requirements.md)
 
 | Parameter | Value |
 |-----------|-------|
-| Engine | JetCat P550-PRO (stock, 4.9 kg) |
-| Nozzle | C-D, 35mm throat → 47mm exit, 10° half-angle, +11% thrust |
+| Engine | JetCat P550-PRO (stock, 4.9 kg) + **afterburner** (wet 450–475 N @ M1) |
+| Nozzle | C-D + variable-area iris (AB), 45→55 mm throat |
 | Intake | Pitot, 105mm lip, 103mm throat, 15mm BL diverter |
-| MTOW | 12.2 kg |
-| Length | 2.2 m, fineness 11:1 |
-| Wing | Delta, 0.9m span, 0.095 m², biconvex 3.5% |
-| Cd at M1 | 0.166 |
-| Thrust at M1 | 300 N |
-| T-D margin | +7.8 N |
+| MTOW | 13.6 kg (≤25 kg rule cap) |
+| Length | 2.60 m, fineness 14:1 |
+| Wing | Tapered, 0.95m span, 0.14 m², λ 0.4, Λ_LE 30°, t/c 4% |
+| Hump drag @ M1.05 | ≤ 430 N (design contract) |
+| Wet thrust @ M1 | ≥ 450 N (bench gate) |
+| Target CG | 0.975 m ±20 mm, static margin ≥12% MAC |
+| Dash window | 10,000–12,000 ft, sustain M1.05–1.10 ≥ 5 s |
 | Launch | Dolly, 56m to 70 m/s |
-| Landing | Belly skid + 0.6m drogue chute |
-| Build time | ~150 hours |
-| Est. cost | ~$7,000 |
+| Landing | Belly skid + 0.6m drogue (≤30 m/s) |
+| Est. cost | ~$9,500 |
 
 ---
 
