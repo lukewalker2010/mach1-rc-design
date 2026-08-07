@@ -6,7 +6,7 @@ This file is the **single source of truth for how AI tools work on this reposito
 
 ## 0. Ground rules
 
-1. **Humans approve, AI proposes.** All writes go through PR/review. AI never commits to `main` directly.
+1. **Humans approve, AI proposes.** All writes go through PR/review. AI **may commit and push to `main` directly** — approved change to this rule, effective 2026-08-07 (team decision). For destructive/irreversible changes (history rewrite, secret removal, P0 interface edits) still pause and confirm first.
 2. **The baseline is law.** `18_program_requirements.md` is the authoritative program spec (geometry, CG, thrust/drag contracts, mass table). If another doc contradicts it, the other doc is wrong — fix it, don't duplicate it.
 3. **Never break an interface without a cross-team review.** Changing a mating dimension in `INTERFACES.md` is a P0 change.
 4. **One coordinate system, everywhere.** Fuselage-station origin at the nose tip, +X aft, +Z up. All part CAD carries station/axis in its filename or header.
