@@ -1,5 +1,10 @@
 # Wing Skin Layup Schedule — Detailed Manufacturing Instructions
 
+> **2026-09-16: PROCESS NOT QUALIFIED.** This legacy layup must be reconciled
+> with a fitting spar/skin design, the selected material supplier's cure
+> requirements and measured allowables. See [20](../20_structural_analysis_v2.md),
+> [25 R04/R16](../25_readiness_review.md) and [27](../27_manufacturing_release.md).
+
 ## 1. Overview
 
 The wing skins are carbon-epoxy prepreg, vacuum-bagged and cured on the male mould. Two distinct layup zones:

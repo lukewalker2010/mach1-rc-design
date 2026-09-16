@@ -1,4 +1,4 @@
-#! /tmp/opencode/cq312/bin/python
+#!/usr/bin/env python3
 """Mach 1 RC - BOM v2 arithmetic, CG excursion, and tank vent sizing.
 
 Author: E3 (Systems/M&V). Committed per AGENTS.md sec 4.4 (analysis changes
@@ -6,6 +6,13 @@ must ship the script that produced the number).
 All inputs trace to 18_program_requirements.md / 15 / 16 / 17 / 09.
 """
 import math
+
+if __package__:
+    from .design_checks import mass_rows
+    from .power_budget import estimate
+else:
+    from design_checks import mass_rows
+    from power_budget import estimate
 
 # ---------------------------------------------------------------------------
 # 1. BOM v2 (mirror of 22_bom_v2.md). (cat, item, qty, unit, supplier, single_src, fab)
@@ -72,7 +79,7 @@ BOM = [
     ("Systems/M&V", "GPS u-blox M8P RTK (Here+) - NAV-PVT >=10 Hz", 1, 100.0, "CubePilot", False, False),
     ("Systems/M&V", "Telemetry RFD900x (air) - bundle 2 units ~$220", 1, 120.0, "ReadyMadeRC", False, False),
     ("Systems/M&V", "Pitot-static probe (Prandtl; REPLACES dead Eagle Tree link)", 1, 25.0, "HobbyKing / generic", False, False),
-    ("Systems/M&V", "Airspeed sensor MS4525DO", 1, 35.0, "DigiKey / eBay", False, False),
+    ("Systems/M&V", "Airspeed sensor allowance - HOLD range/order code (26 sec 1)", 1, 35.0, "Supplier TBD", False, False),
     ("Systems/M&V", "TAT probe (Rosenount-style) at x=0.08 m (18 5.2)", 1, 40.0, "Aspen/OpenCanopy", False, False),
     ("Systems/M&V", "Sealed SD data loggers x2 (write-once, 50 Hz)", 1, 60.0, "OpenLog / byteflight", False, False),
     ("Systems/M&V", "FPV VTX 5.8 GHz + camera + ground goggles (18 5.2)", 1, 150.0, "GetFPV / RDQ", False, False),
@@ -86,7 +93,7 @@ BOM = [
     ("Systems/M&V", "Wire 22 AWG silicone 10 m", 1, 25.0, "Amazon", False, False),
     ("Systems/M&V", "Braided nylon conduit 10 mm 3 m", 1, 12.0, "Amazon", False, False),
     ("Systems/M&V", "5 V BEC (Castle CC BEC 10 A)", 1, 30.0, "Castle Creations", False, False),
-    ("Systems/M&V", "12 V boost (Pololu D24V50F12 2.5 A; supersedes U3V40A12 1.5 A - Speck needs 1.8 A)", 1, 20.0, "Pololu", False, False),
+    ("Systems/M&V", "12 V converter allowance - HOLD actual boost selection (25 R10)", 1, 20.0, "Supplier TBD", False, False),
     ("Systems/M&V", "3.3 V regulator Pololu D24V10F3", 1, 10.0, "Pololu", False, False),
     # --- Fuel system (E3 owns per I-06; 18 D20) ---
     ("Systems/M&V", "Fuel bladder 2.0 L custom PU 2-ply (I-06 stations 0.35-0.60 m)", 1, 60.0, "Custom fabrication", True, True),
@@ -143,6 +150,7 @@ print(f"BOM v2 line items : {n}")
 for c in ["Airframe", "Propulsion", "Afterburner", "Systems/M&V", "Launch/Recovery", "Consumables"]:
     print(f"  {c:16s} : ${cats[c]:9,.2f}")
 print(f"  {'TOTAL':16s} : ${total:9,.2f}")
+print("Historical allowance only; S6/S20 not purchase-qualified, replacement costs/sources TBD.")
 print("=" * 64)
 
 # 18 sec 5.2 add-on group check
@@ -152,24 +160,10 @@ print(f"18 sec 5.2 group subtotal (TAT+loggers+FPV+ballast+pump+BEC/etc): ${grou
 # ---------------------------------------------------------------------------
 # 2. CG excursion (18 sec 3.4 mass table) - full -> empty fuel
 # ---------------------------------------------------------------------------
-rows = [
-    ("P550-PRO engine", 4.90, 1.20),
-    ("Afterburner", 0.83, 1.48),
-    ("Wing + carry-through", 0.50, 1.00),
-    ("Stabilator + hardware", 0.10, 2.35),
-    ("Ventral fin", 0.10, 2.30),
-    ("Fuselage structure", 2.50, 1.30),
-    ("Fuel (2.0 L Jet A1)", 1.62, 0.45),
-    ("Fuel system", 0.50, 0.60),
-    ("Avionics + battery + FPV + M&V", 0.90, 0.25),
-    ("Landing/dolly hardpoints", 0.35, 0.80),
-    ("Nose ballast (tungsten)", 1.00, 0.10),
-    ("Miscellaneous", 0.30, 1.00),
-]
+rows = mass_rows()
 M = sum(r[1] for r in rows)
 mom = sum(r[1] * r[2] for r in rows)
-m_fuel = rows[6][1]
-x_fuel = rows[6][2]
+_, m_fuel, x_fuel = next(row for row in rows if row[0].startswith("Fuel ("))
 cg_full = mom / M
 M_empty = M - m_fuel
 mom_empty = mom - m_fuel * x_fuel
@@ -187,6 +181,7 @@ print(f"Fuel-burn excursion (full->empty): +{cg_empty - cg_full:.4f} m  (aft)")
 print(f"Static margin full  (NP=1.00) : {sm_full*100:6.1f} % MAC")
 print(f"Static margin empty (NP=1.00) : {sm_empty*100:6.1f} % MAC   <- 18 claim '>=12% at empty' does NOT hold")
 print(f"NP required for >=12% MAC at empty CG: {np_req_empty:.4f} m")
+print("NP values above are sensitivity assumptions, not measured stability. Empty CG fails the independent band.")
 print("=" * 64)
 
 # ---------------------------------------------------------------------------
@@ -198,7 +193,7 @@ Cd = 0.6             # short-tube/entrance+exit loss coefficient
 for dP in (25.0, 50.0, 100.0):
     A = Q / (Cd * math.sqrt(2 * dP / rho))
     d = math.sqrt(4 * A / math.pi) * 1000
-    print(f"vent @ dP={dP:5.0f} Pa: d = {d:5.2f} mm  ->  recommend 5 mm ID")
+    print(f"vent @ dP={dP:5.0f} Pa: minimum idealised d = {d:5.2f} mm (before line/check-valve losses)")
 
 # existing 2 mm vent pressure drop at 83 ml/s
 for dmm in (2.0, 5.0):
@@ -210,25 +205,12 @@ for dmm in (2.0, 5.0):
 # ---------------------------------------------------------------------------
 # 4. Current budget / battery sizing for a ~5 min sortie + 2x20s AB dashes
 # ---------------------------------------------------------------------------
-servo_cruise = 0.5
-servo_peak = 4.0
-ecu_avg = 1.5
-ecu_peak = 2.0
-rail5 = 1.7          # FC 0.4 + Rx 0.2 + RFD 0.3 + FPV 0.5 + loggers 0.2 + TAT 0.1
-dash = 20.0          # s per AB dash, x2
-pump_12 = 1.5        # A @ 12 V Speck operating point (6 bar / 34 g/s)
-sol_12 = 0.5
-boost_eff = 0.85
-batt_V = 7.4
-i_from_batt_dash = (pump_12 + sol_12) * 12.0 / batt_V / boost_eff   # A on 2S during AB
-flight_avg = servo_cruise + ecu_avg + rail5 + 0.1  # + Pico/sensors
-t_flight = 5.0 * 60.0
-Ah = (flight_avg * t_flight + i_from_batt_dash * dash * 2) / 3600.0
-peak = servo_peak + ecu_peak + i_from_batt_dash
+power = estimate()
 cap = 5.0  # Ah
 print("=" * 64)
-print(f"Flight avg draw (2S)        : {flight_avg:.2f} A")
-print(f"AB dash draw on 2S          : {i_from_batt_dash:.2f} A (2x20 s)")
-print(f"Charge used / 5 min sortie  : {Ah:.3f} Ah  of {cap:.1f} Ah -> {Ah/cap*100:.1f}%")
-print(f"Worst-case peak draw        : {peak:.1f} A (battery 150 A burst OK)")
+print(f"Declared flight avg (2S)    : {power['flight_average_a']:.2f} A")
+print(f"AB dash draw on 2S          : {power['ab_input_a']:.2f} A (2x20 s)")
+print(f"Charge / hypothetical 5 min : {power['charge_ah']:.3f} Ah of {cap:.1f} Ah")
+print(f"Declared-load peak at 7.4 V : {power['declared_peak_a']:.2f} A")
+print("Open: iris/drogue loads, startup/stall/low-pack voltage, converter thermal testing, actual fuel endurance.")
 print("=" * 64)

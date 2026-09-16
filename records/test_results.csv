@@ -1,0 +1,1 @@
+test_id,phase,configuration_commit,hardware_serials,test_card_path,calibration_ids,raw_data_path,raw_data_sha256,analysis_command,analysis_commit,result,uncertainty_record,inspection_record,reviewer,date,next_permitted_test

@@ -12,3 +12,8 @@ Thumbs.db
 *.step
 *.igs
 *.gcode
+
+# Local Python environments / caches (tracked engineering artifacts stay tracked)
+.venv/
+__pycache__/
+*.py[cod]

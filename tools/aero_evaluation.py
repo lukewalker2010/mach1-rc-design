@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Aero re-run for re-baselined Mach-1 RC (18 §3). Drag buildup + stability.
-Run: /tmp/opencode/cq312/bin/python aero_v2.py  (or python3)
+Run: python3 tools/aero_evaluation.py
+Empirical screening only: see 19 and 25. No validated transonic error bounds.
 """
 import math
 
@@ -72,9 +73,9 @@ for alt in [3048, 3658]:
               f"{d['D_base']:6.1f} {d['D_excr']:6.1f} {d['D_ind']:6.1f} {d['D_total']:7.1f}")
 print()
 d = drag(1.05, 3048)
-print(f"M1.05/10kft hump drag = {d['D_total']:.0f} N  (contract <=430)  -> {'PASS' if d['D_total']<=430 else 'FAIL'}")
+print(f"M1.05/10kft model drag = {d['D_total']:.0f} N  (contract <=430; physical closure UNVERIFIED)")
 d = drag(1.10, 3048)
-print(f"M1.10/10kft sustain drag = {d['D_total']:.0f} N  (wet thrust 451-497) -> {'PASS' if d['D_total']<=451 else 'CHECK'}")
+print(f"M1.10/10kft model drag = {d['D_total']:.0f} N  (matched flight thrust and model uncertainty UNVERIFIED)")
 d = drag(1.05, 3658)
 print(f"M1.05/12kft hump drag = {d['D_total']:.0f} N")
 print(f"Re_w @M1/10kft = {drag(1.0,3048)['Re_w']/1e6:.2f}e6 ; Re_b = {drag(1.0,3048)['Re_b']/1e6:.1f}e6")

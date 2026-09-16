@@ -1,5 +1,12 @@
 # Fuselage Mould — CNC Coordinates
 
+> **2026-09-16: INVALID NET GEOMETRY — NOT FOR TOOLPATHS.** The law/table below
+> pinches the fuselage completely shut at x=850 mm. Its regeneration from the
+> old nose expression did not create a continuous usable fuselage. Preserve
+> these values as audit evidence until the R01 owner review resolves the nose
+> law and installed envelopes; do not silently substitute a new interface shape.
+> See [25 R01](../25_readiness_review.md) and `tools/design_checks.py`.
+
 ## Overview
 
 The fuselage uses a **split female mould** (LH and RH halves) bolted at a flange parting line. The mould is CNC-machined from RenShape 460 tooling board or MDF + tooling gelcoat.

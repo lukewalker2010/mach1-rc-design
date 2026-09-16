@@ -1,9 +1,19 @@
-# Mach 1 RC — Bill of Materials v2 (authoritative for the build)
+# Mach 1 RC — Bill of Materials v2 (Development Allowance)
 
 **Author:** E3 (Systems/M&V), 2026-08-06
-**Supersedes:** `09_bom.md` and `09_bom_with_links.md` for build procurement.
-**Dispositions closed:** 18 §7 D19 (BOM missing AB + M&V items), D20 (fuel vent), D23 (09 cost math errors), D24 (dead links).
+**Supersedes:** `09_bom.md` and `09_bom_with_links.md` as a planning estimate, not a purchase release.
+**Review:** 2026-09-16 — arithmetic reproduced; procurement, vent and instrumentation closure remains open (25 R09–R11/R16).
 **Total:** **$9,662** — re-summed line-by-line (see §7). Within ~2% of the 18 §5.2 / 00_index target **~$9,500**; the delta is the fully itemised AB build-out from 15:652 and 16:1119 vs the rough §5.2 estimate.
+
+> This is a **historical allowance**, not a current delivered/qualified-aircraft
+> quote. S6/S20 retain $35/$20 placeholders so the cost change is **$0**, not an
+> invented replacement price. Their actual parts, qualified alternate sources
+> and single-source status are **TBD**. Requote these plus the rig, tooling and
+> test program after design closure. Primary-source checks on 2026-09-16:
+> [Pololu D24 buck family example](https://www.pololu.com/product/2855) and
+> [TI ADS1256](https://www.ti.com/product/ADS1256) are live; these confirm technical
+> incompatibilities, not purchase qualification of the old BOM. No claim is made
+> that every historical supplier link or price was reverified this session.
 
 > Legend: **★** = single-source / critical-path item. **[FAB]** = fabricated in-house or via a machine shop, not bought off-the-shelf. All prices USD, traceable to `09_bom.md`, `09_bom_with_links.md`, `15_afterburner_fuel_ignition.md` (App. C, line 652), `16_afterburner_electronics.md` (line 1119), `17_afterburner_thermal_integration.md` (2d), and `18_program_requirements.md` §5.2. Sum verified by `tools/bom_v2_check.py`.
 
@@ -101,7 +111,7 @@ Structural hot-section parts are **[FAB]** Inconel 625 / Ti-6Al-4V / 304 SS per 
 | S3 | GPS | Here+ RTK GNSS, u-blox M8P, **NAV-PVT ≥10 Hz** (18 §5.1) | 1 | $100 | $100 | CubePilot | | | |
 | S4 | Telemetry | RFD900x (900 MHz) air unit | 1 | $120 | $120 | ReadyMadeRC | | | buy bundle (2 units) ~$220 for air + ground |
 | S5 | Pitot-static probe | Prandtl-type at x = 0.05 m (I-07) | 1 | $25 | $25 | HobbyKing / generic | | | **replaces dead Eagle Tree link** (link report #24: domain DNS-failed) |
-| S6 | Airspeed sensor | MS4525DO differential | 1 | $35 | $35 | DigiKey / eBay | | | Mouser/DigiKey block bots; order via product page |
+| S6 | Airspeed sensor **HOLD** | Exact range/order code TBD; 23's 3447 Pa range cannot cover M1 | 1 | $35 allowance | $35 | TBD | TBD | | Select calibrated pressure envelope per 26; not purchase-qualified |
 | S7 | **TAT probe** | Rosenount-style total-air-temp at x = 0.08 m (I-07) | 1 | $40 | $40 | Aspen/OpenCanopy equiv. | | | 18 §5.2 add-on |
 | S8 | Sealed SD loggers | 2× independent, write-once, ≥50 Hz (18 §5.1) | 2 | $30 | $60 | OpenLog / byteflight | | | 18 §5.2 add-on |
 | S9 | **FPV** | 5.8 GHz VTX + camera + ground goggles (18 §5.2) | 1 set | $150 | $150 | GetFPV / RDQ | | | mandatory (18 §5.3) |
@@ -120,7 +130,7 @@ Structural hot-section parts are **[FAB]** Inconel 625 / Ti-6Al-4V / 304 SS per 
 | S17 | Wire 22 AWG silicone | signal | 10 m | $2.50/m | $25 | Amazon | | | |
 | S18 | Conduit braided nylon | 10 mm | 3 m | $4/m | $12 | Amazon | | | |
 | S19 | **5 V BEC** | Castle CC BEC 10 A (16:1112) | 1 | $30 | $30 | Castle Creations | | | 18 §5.2 group |
-| S20 | **12 V boost** | Pololu D24V50F12 **2.5 A** — **supersedes 16's U3V40A12 (1.5 A)**: Speck pump needs 1.8 A @ 12 V | 1 | $20 | $20 | Pololu | | | 18 §5.2 group; sizing justified in 23 §4–5 |
+| S20 | **12 V converter HOLD** | Actual boost/buck-boost TBD; “D24V50F12 boost” not verified, D24 buck family cannot raise 2S to 12 V | 1 | $20 allowance | $20 | TBD | TBD | | Qualify full low-voltage/startup/thermal envelope; see 23 §4–5 and 25 R10 |
 | S21 | 3.3 V regulator | Pololu D24V10F3 (16:1114) | 1 | $10 | $10 | Pololu | | | |
 
 ### 5.3 Fuel system (E3 owns, I-06 / 18 D20)

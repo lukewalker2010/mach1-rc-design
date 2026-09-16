@@ -4,7 +4,15 @@
 **Supersedes:** Contradictory values in 01 / 04 / 05 / 06 / 07 / 10 / 11 / 12 / 13 / 14 / 15 / 17 where noted.
 **Status:** ⚠️ DESIGN NOT YET MANUFACTURABLE AS DOCUMENTED — this document is the disposition.
 
-> **One-line verdict:** The single-P550-PRO + **afterburner** configuration is the only airframe-shape that can physically close the thrust-vs-drag gap at Mach 1 within the 25 kg MTOW cap, and it closes *only* if the airframe meets the drag budget below. As written, the package's own analyses contradict each other (thrust 180–550 N, MTOW 12.2–13.8 kg, limit load 4g–10g, wing area 0.095–0.25 m²). This document fixes the baseline and sets hard design contracts.
+> **2026-09-16 review:** requirements and mating dimensions remain the coordination
+> contract; calculated feasibility claims below are preliminary, not release
+> evidence. See `25_readiness_review.md` (R01–R16), corrected structure in 20,
+> measurement corrections in 26, and release records in 27. The mould's zero-radius
+> station, rib/spar interference and out-of-band empty CG are unresolved P0 items.
+> Static bench thrust alone does not verify flight thrust. Low-speed approach/
+> landing numbers below are requirements to close, not a demonstrated envelope.
+
+> **One-line verdict:** Single-P550-PRO + **afterburner** is the selected development concept. Its thrust, drag, structure, CG and recovery requirements have not been demonstrated together. This document sets design contracts; meeting them must be established by the closure work in 25, not assumed from the original estimates below.
 
 ---
 
@@ -155,7 +163,15 @@ The documented 2 mm spar + 8 mm hinge bearings inside a 1.225 mm-thick airfoil c
 | Miscellaneous | 0.30 | 1.00 | 0.300 |
 | **Total** | **13.60** | | **13.257** |
 
-**CG = 0.975 m.** With MAC 0.156 m and wing 30% MAC at x ≈ 1.0 m, neutral point ≈ 1.00 m → **static margin ≈ 16% MAC** — stable, no FBW dependence. Ballast reduced from 5.8–11.2 kg (07:223, 17:474) to **1.0 kg** via the engine-forward re-layout. (Verify: 13.257/13.60 = 0.975 ✓; fuel-burn excursion ~ +0.03 m aft, still ≥12% MAC at empty.)
+**Arithmetic correction (2026-09-16):** component rows sum to 13.60 kg and
+13.2574 kg·m. Full CG = **0.974809 m**; empty mass = **11.98 kg**, moment =
+**12.5284 kg·m**, CG = **1.045776 m**. Excursion is **+0.070967 m aft**, not
++0.03 m. Source: `tools/design_checks.py` / `tools/structural_analysis.py`.
+The full-fuel point meets the 0.975 ±0.020 m contract; empty does **not**.
+The earlier “empty ≥12% MAC” stability claim is withdrawn pending a validated
+full-aircraft neutral point and trim analysis. Neither the wing-only estimate
+nor 19's assumed tail contribution demonstrates compliance. Resolve layout
+through the existing owner review before G1; no component station is changed here.
 
 ---
 

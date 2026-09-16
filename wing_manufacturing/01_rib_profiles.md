@@ -1,5 +1,10 @@
 # Wing Rib Profile Coordinates — CNC/Cutting Data
 
+> **Legacy coordinates — NOT FOR CUTTING (2026-09-16).** This sine/3.5% table
+> differs from the current generator's parabolic/4% section. The newer DXFs also
+> have verified hole breakouts; neither set is released. Resolve geometry and
+> spar design together per [25 R02–R04](../25_readiness_review.md).
+
 ## Biconvex Airfoil Formula
 
 ```

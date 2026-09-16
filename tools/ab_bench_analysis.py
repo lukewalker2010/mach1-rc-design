@@ -17,6 +17,9 @@ Every printed number is reproduced in 21_afterburner_bench_program.md.
 
 import math
 
+print("DEVELOPMENT MODEL ONLY: static-to-flight velocity/flow/pressure matching is unvalidated.")
+print("700 N static is not flight-thrust qualification; see 25 R07 and 26 §4.")
+
 MDOT_M1 = 1.10      # kg/s, corrected-flow model at M1/10kft (18 sec 2.1)
 MDOT_SL = 0.95      # kg/s, static sea-level wet (0.93 core + 0.023 AB)
 VINF = 328.0        # m/s, 10kft speed of sound (13:65)
@@ -65,7 +68,7 @@ print(f"  per 20 s burst    = {g_20:5.0f} g  = {g_20/0.81:4.0f} ml")
 
 print()
 print("=" * 74)
-print("SEC 3: STATIC -> M1 GATE CONVERSION (ram-drag-free thrust stand)")
+print("SEC 3: CONDITIONAL STATIC -> M1 ESTIMATE (not a qualification gate)")
 print("  net_M1 = F_s * (mdot_M1/mdot_SL) - mdot_M1*Vinf  >= 450 N")
 print("  F_s >= (450 + mdot_M1*Vinf) * mdot_SL/mdot_M1")
 print("=" * 74)

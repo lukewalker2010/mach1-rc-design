@@ -1,5 +1,12 @@
 # Wing Manufacturing Package — Index
 
+> **2026-09-16: NOT RELEASED FOR CUTTING.** The current DXFs fail spar-hole
+> containment at R1–R5; the CSV/generator root convention conflicts with the
+> authoritative wing area. The 3.5% sine-section/rod/layup reference data below
+> are legacy and do not describe the current 4% parabolic box-spar concept.
+> See [25 R02–R04](../25_readiness_review.md) and [27](../27_manufacturing_release.md).
+> `python3 tools/design_checks.py` from the repository root reproduces failures.
+
 **Date:** 2026-07-21
 **Purpose:** Close the manufacturing gap between design spec and build-ready data
 
@@ -20,7 +27,8 @@ The original design spec (`04_wing_structure.md`) defined the wing structurally 
 - Detailed layup sequence and cure parameters
 - Ply drop-off transition detail
 
-This package fills those gaps and makes the wing **as build-ready as the C-D nozzle**.
+This package records the original manufacturing concept. It is not a released
+build package; geometry, spar, material/process and inspection closure is open.
 
 ## Build Time Estimate
 

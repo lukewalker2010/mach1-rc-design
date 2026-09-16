@@ -1,125 +1,82 @@
-# Structural Analysis v2 (Re-baselined Geometry)
+# Structural Analysis v2 — Corrected Equilibrium, Open Sizing
 
-**Doc:** 20 — supersedes 10 (audit D4: re-run on re-baselined geometry)
-**Author:** E1 (Airframe) + AI verification
-**Date:** 2026-08-06
-**Status:** 🟡 margins closed with the recommended box-spar sizing; pitch-authority follow-up open
-**Authority:** `18_program_requirements.md` §3 (geometry), §2.3 (thrust 465 N design), INTERFACES.md I-01 (engine mount)
+**Revised:** 2026-09-16 · **Owner:** E1 · **Status:** NOT CLOSED.
+Supersedes 10's old-geometry calculations and this document's earlier 163 N·m
+half-wing calculation and strength/thermal PASS claims. Requirements remain in
+18 and INTERFACES; no member sizing or interface change is approved here.
 
-> **Every number below is produced by `tools/structural_analysis.py` (committed, AGENTS.md §4.4).** Load cases use MTOW = 13.60 kg (18 §3.4 table as published). Limit 4g / ultimate 6g load factors per 10 §1 (Mach-1 C_Lmax ceiling ≈ 11g hard limit, so 6g ultimate is the sizing case).
+## 1. Reproduce
 
----
-
-## 1. Dynamic pressure & loads at M1/10 kft
-
-| Quantity | Value | Source |
-|---|---|---|
-| q @ M1/10 kft | 0.5·0.905·328² = 48,776 Pa | 10:28 (geometry-independent) |
-| Wing area S_w | 0.14 m² | 18 §3.2 |
-| MTOW | 13.60 kg → 133.4 N | 18 §3.4 |
-| C_L for 1g @ M1 | 133.4/(48,776·0.14) = **0.0195** | — |
-| C_Lmax (biconvex 4%, M1) | ~0.4 | 10:46 |
-| Max load factor @ M1 | 0.4·48,776·0.14/133.4 ≈ **20g** (C_L-limited) | 10:48 re-derived |
-
-The Mach-1 lift ceiling is not the binding constraint (20g > 6g). **The 6g ultimate case governs spar sizing.**
-
----
-
-## 2. Wing box spar
-
-### 2.1 Loads (trapezoidal lift, λ=0.4)
-
-```
-Ycg (lift centroid from root) = (1+2λ)/(3(1+λ)) · b/2 = 0.4286 · 0.475 = 0.2036 m
-M_root = n·W·Ycg    V_root = n·W·(0.475−Ycg)/0.475
+```sh
+python3 tools/structural_analysis.py
+python3 tools/design_checks.py
 ```
 
-| Case | n | M_root (N·m) | V_root (N) |
-|---|---|---|---|
-| LIMIT 4g | 4 | **108.6** | **305** |
-| ULT 6g | 6 | **163.0** | **457** |
+Mass is read directly from 18 §3.4: 13.60 kg, moment 13.2574 kg·m. Full/half/empty
+fuel CGs are 0.9748 / 1.0080 / 1.0458 m. Only the full-fuel point meets the
+0.955–0.995 m band. A neutral-point assumption cannot override that requirement.
 
-### 2.2 Sizing constraint — thin wing
+## 2. Half-wing loads
 
-Root chord 0.210 m, t/c 4% → root max thickness **8.4 mm** (18 §3.2). Spar is at 30% chord where the biconvex half-thickness is `(t/2)·4·0.3·0.7` = 1.47·4.2·0.21 ≈ — **in practice the available cap separation inside the skin envelope is ~7 mm**. This rules out the 10 mm separations in earlier sweeps; **sep = 7.0 mm is the build limit**.
+Preliminary **centreline** cantilever with chord-proportional symmetric lift:
 
-### 2.3 Recommended sizing (closes margins ≥ 2.0)
+```text
+W = m g
+V_root = n W / 2
+y_centroid = (b/2) (1+2λ) / [3(1+λ)]
+M_root = V_root y_centroid
+```
 
-| Member | Sizing | Stress @ 6g | Capability | **Margin** |
-|---|---|---|---|---|
-| Upper/lower caps | **5 plies × 0.2 mm T300 UD × 50 mm** (area 5·0.2·50 = 50 mm²) | σ = M/(sep·A) = 163.0/(0.007·50e-6) = **466 MPa** | T300 comp 1200 MPa | **2.6×** |
-| Shear web | **1.0 mm ±45° CF, sep 7 mm** (per side) | τ = V/2/(0.007·0.001) = **33 MPa** | ±45° ~90 MPa | **2.8×** |
+Inputs b=0.95 m, λ=0.4 (18 §3.2), g=9.81 m/s². The result is **per half-wing**:
 
-- **vs 18 §3.2 "2 plies, 6 mm sep":** 18's §3.2 sizing gave σ = 163.0/(0.006·2·0.2e-3·0.05) = 1358 MPa → **margin 0.88 → FAIL**. The §3.2 "~100 N·m @ 9g" was from a different load arm. **The 5-ply/7 mm box is the change vs 18 §3.2 — flag in the change-notice PR.**
-- Web margin 2.8× vs 10 §2's old failing geometry — the box web carries shear efficiently; 1.0 mm ±45° is buildable in a 7 mm bay.
-- Cap stress at 4g limit = 310 MPa (margin 3.9×) — no fatigue concern for the 2-sortie/day duty.
+| Case | Root shear N | Root moment N·m |
+|---|---:|---:|
+| 4g limit | 266.83 | 54.32 |
+| 6g ultimate | 400.25 | 81.48 |
+| 9g comparison with INTERFACES §3 | 600.37 | 122.22 |
 
-### 2.4 Parametric sweep (for sensitivity)
+The former `n W y_centroid` doubled the bending load. The former shear expression
+`n W (b/2−y_centroid)/(b/2)` was not half-wing equilibrium. These corrections do
+not establish a complete load envelope or authorise reduced structure.
 
-`e1_sweep` (run during verification): at sep 7.0 mm the minimum passing cap is **4 plies × 50 mm** (σ=582 MPa, m=2.06); **5 plies recommended** for handling/misc mass growth to 14.5 kg. Web 1.0 mm passes all cases (m ≥ 2.7). Widening the cap to 60 mm adds no margin benefit over adding a ply and wastes 30% chord depth.
+Define the actual fuselage-side joint separately and integrate the exposed lift
+distribution about it. Add tail download, inertial relief, gusts, roll/asymmetric
+loads, torsion, launch/recovery loads and local joint/fastener effects. Resolve
+the 4g/6g versus 9g/~100 N·m contracts with the interface owners.
 
----
+## 3. The proposed spar does not fit
 
-## 3. Stabilator & pitch authority (18 §3.3, 06)
+The existing generator's parabolic section is
+`depth(u)=0.04 c 4u(1−u)`, u=x/c. For its c=210 mm root at u=0.30:
 
-| Quantity | Value | Source |
-|---|---|---|
-| S_t | 0.012 m² | analysis assumption |
-| x_tail | 2.35 m | 18 §4 |
-| c_avg | 0.06 m | analysis assumption |
-| Servo | KST X20-12T, 1.18 N·m | BOM v2 (22) |
+- Outer depth = **7.056 mm**.
+- With 0.5 mm skin allowance per face and 1.0 mm caps, available cap-centroid
+  separation is at most **5.056 mm**, not 7 mm.
+- For the proposed **50 mm wide** flat cap centred at 30% chord, the forward cap
+  edge has only **4.980 mm** outer depth. The corresponding maximum constant
+  centroid separation falls to **2.980 mm** before adhesive/tolerance allowances.
 
-**Hinge moment @ M1, 15°:** M_h = q·S_t·c_avg·0.02 = 48,776·0.012·0.06·0.02 = **0.70 N·m** → servo margin **1.7×**.
+These numbers are from `tools/structural_analysis.py`, using 20's former cap
+proposal and `gen_wing_ribs.py`'s section/offset. Skin/bond process is still
+unreleased. The depth problem worsens along a constant-thickness spar toward
+the tip. Existing round rib holes fail containment (25 R02).
 
-> ⚠️ **Follow-up (P0, ties to 19 §4):** with full-load SM of +75% MAC the tail must carry a **trim download** at rotation that can exceed the 15° hinge case. **Verify rotation-pitch authority at the dolly-drop speed (≈38 m/s, 18 §5.4) and add tail load to the 6g case before flight.** If the servo margin closes to < 1.3, move ballast aft (19 §4) — this is the same change-notice item.
+Therefore the former 5-ply/7 mm stress and “2.6× margin” recommendation is
+withdrawn. Establish a manufacturable tapered spar and actual laminate/material
+allowables first, then check compression, buckling, web shear, bond transfer,
+fatigue, damage tolerance and environmental knockdowns.
 
----
+## 4. Remaining structural closure
 
-## 4. Engine mount (I-01: 4× M3 on 45 mm PCD @ 1200 mm)
-
-| Load | Value |
+| Subsystem | Missing evidence |
 |---|---|
-| Wet thrust (design) | 465 N → 116 N shear/bolt |
-| 5g vibration (engine+AB 5.87 kg) | 72 N/bolt |
-| M3 A2-70 single-shear capacity | ~2113 N (documented in 14) |
-| **Margin** | **> 18× (thrust), > 29× (vib)** |
+| Stabilator | Real hinge/bearing/spar geometry; hinge moments across Mach/q/incidence; per-servo linkage geometry, speed, torque and backlash under load; rotation and trim authority |
+| Engine mount | Manufacturer interface and combined axial/lateral/moment loads; bolt-group tension/shear, bearing, pull-through, preload and bonded insert load path |
+| Thermal interface | Conjugate/transient heat balance, material temperature limits and measured soak-back; blanket conductivity alone cannot predict composite temperature |
+| Aeroelasticity | Mass/stiffness distributions, torsional rigidity, control freeplay, modal/ground vibration test, correlated flutter analysis and released speed/q limits |
+| Physical proof | Fixture/load distribution representing the completed design, calibrated force/strain/deflection, inspection and article disposition |
 
-No change from 14 — mount is not a constraint.
-
----
-
-## 5. Thermal (AB shell → composite, 17 §2a carried forward)
-
-AB outer shell runs at **≈610 K** (17:287). Composite Tg limit 410 K. **5 mm ceramic blanket (Cotronics 3633, k=0.05):**
-
-```
-Required ΔT  = 610 − 410 = 200 K
-Leak flux    = k·ΔT/t = 0.05·200/0.005 = 2,000 W/m² = 3% of shell flux (76,000 W/m²)
-```
-
-**PASS** — the blanket carries only ~3% of the shell's heat outward (rest is taken by the annulus cooling air, 17 §2a); composite stays < 410 K. This closes 18 D13 (firewall + blanket) for the AB interface; the engine-bay firewall remains per 10:159-174.
-
----
-
-## 6. Load summary & verdict
-
-```
-────────────────────────────────────────────────────
-  q @ M1/10kft           48.8 kPa
-  C_L 1g @ M1             0.0195
-  Load factor ceiling     20g (C_L-limited) — not binding
-  ── Wing box (6g ult) ──
-    M_root                163.0 N·m   V_root 457 N
-    Cap (5×0.2mm×50mm)    466 MPa     margin 2.6×   ✓ ≥ 2.0
-    Web (1.0mm ±45°)       33 MPa     margin 2.8×   ✓
-  ── Stabilator ──
-    Hinge @ M1 15°        0.70 N·m    servo 1.7×    ⚠ check rotation
-  ── Engine mount (I-01) ──
-    4× M3                 116 N/bolt  margin >18×   ✓
-  ── Thermal (AB→composite) ──
-    5mm blanket           610→410 K   leak 3%       ✓
-────────────────────────────────────────────────────
-```
-
-**Structural feasibility: CLOSED** with the 5-ply/7 mm box spar (upgraded from 18 §3.2's failing 2-ply/6 mm). The two open follow-ups — **rotation pitch authority** (high SM) and the **18 §3.2 spar change-notice** — are P0 before flight but do not block the current CAD/DXF baseline.
-*Produced by `tools/structural_analysis.py`, pinned CadQuery env. Supersedes 10's old-geometry (200 mm × 2.2 m, S=0.11, b=1.0, Λ=60°) results.*
+The old thermal calculation prescribed both shell and composite temperatures and
+then calculated `q=kΔT/t`; it did not prove the composite remains below its limit.
+Likewise a generic bolt shear rating or servo stall torque is not an assembly
+qualification. Track closure in 25 and retain measured evidence using 27.

@@ -67,12 +67,16 @@ This file is the **single source of truth for how AI tools work on this reposito
 
 ## 6. Status board (update after each session)
 
+Reviewed 2026-09-16: see `25_readiness_review.md` for evidence and R01–R16.
+Analysis regression tests are separate from physical qualification. Requirements
+and controlled mating dimensions above are unchanged; no release is implied.
+
 | Subsystem | Owner | Status | Next action |
 |---|---|---|---|
-| A. Airframe | E1 | 🔴 re-baseline done, CAD pending | re-run 10/12; regen moulds & ribs |
-| B. Propulsion/AB | E2 | 🟡 design done, CAD verified | AB bench build → wet thrust ≥450 N |
-| C. Systems/M&V | E3 | 🟡 gaps identified | add TAT/loggers/FPV; BOM v2 |
-| D. Launch/Recovery | E4 | 🟡 | dolly abort brakes; TAS-gated drogue |
-| E. Manufacturing/QC | E5 | 🔴 | regen net-part DXFs; reconcile mould tables |
+| A. Airframe | E1 | 🔴 load arithmetic corrected; fit/CG/structure open | resolve R01–R06, validated aero/trim/flutter (R14) |
+| B. Propulsion/AB | E2 | 🔴 bench/flight matching and rig unqualified | close R07/R08/R11–R13 before hot testing |
+| C. Systems/M&V | E3 | 🟡 offline Mach/log tools tested; hardware open | qualify pressure/power/DAQ/abort and dual logs (R09–R12/R15) |
+| D. Launch/Recovery | E4 | 🔴 low-speed lift/recovery not closed | resolve R06 and demonstrate dolly/skid/chute limits |
+| E. Manufacturing/QC | E5 | 🔴 current mould/DXF failures reproduced | resolve R01–R04/R16; release matched parts using 27 records |
 
 Legend: 🔴 needs work · 🟡 in progress · 🟢 complete/verified

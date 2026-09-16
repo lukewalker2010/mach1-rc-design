@@ -3,11 +3,23 @@
 **Doc:** 24 — Thrust stand build package for the afterburner bench program
 **Author:** E2 (Propulsion/Afterburner) with E3 (M&V)
 **Date:** 2026-08-07
-**Status:** 🟡 design complete; build + Phase 0.1–0.2 verification next
+**Status:** 🔴 CONCEPT ONLY — structural/DAQ/software release open (2026-09-16)
 **Engine:** JetCat P550-PRO + afterburner (single engine)
-**Gate:** 21 §6 — static wet thrust **F_s ≥ 700 N** at T7 = 1800 K ⇔ net wet ≥ 450 N M1-equivalent; design point F_s = **721 N**
+**Development target:** 21 §6 conditional model: static wet **F_s ≥700 N**.
+This does **not** demonstrate ≥450 N flight thrust; see 25 R07 and 26 §4.
 
-> **Scope.** This is the physical rig that carries out 21 §4 Phases 0–5. Every measured quantity maps 1:1 onto the 21 §5 sensor table (T-1…S-1). All numbers here are produced by `tools/thrust_stand_check.py` (committed, AGENTS.md §4.4) or cite their authority line. Where a spec in 21 §5 cannot be met by an off-the-shelf part without over-spend, the deviation is **flagged, not silently accepted** (§10).
+> **September review overrides the detailed concept claims below:** ADS1256
+> provides four differential pairs/eight single-ended inputs, not eight pairs;
+> the proposed direct-wired sensors exceed its input pins. MAX31856's 60 Hz
+> rejection is not its conversion rate. Section 3 uses unqualified extrusion,
+> bolt and stiffness assumptions. Sections 6/11 describe programs that are
+> **not committed or implemented**. Do not order/build from these tables as a
+> released package. Required corrections/evidence: 25 R11–R13, 26 §4 and 27.
+
+> **Scope.** This is the historical proposed rig for 21 §4 Phases 0–5, not a
+> qualified physical assembly. Tables retain concept dimensions and costs for
+> redesign review. The current `tools/thrust_stand_check.py` screens the known
+> deficiencies; it no longer reports the former strength/rate PASS claims.
 
 ---
 
@@ -61,20 +73,26 @@ Design loads used in the structural checks (17 §2a vibration case): **5g dynami
 
 ---
 
-## 3. Structural Checks (from `tools/thrust_stand_check.py`)
+## 3. Historical Structural Estimates (Qualification Claims Withdrawn)
+
+The ratios below are retained from the original concept, **not current PASS
+results**. They require the supplier/combined-load/anchor work in 25 R13.
 
 | Check | Load | Capacity | Margin | Status |
 |---|---|---|---|---|
-| Load cell (T-1, 100 kg = 981 N) | gate 700 N | 981 N | 1.40× | PASS |
-| Load cell vs design point | 721 N | 981 N | 1.36× | PASS |
-| Rails (2× SBR12, 5g) | 193 N/rail | ≫ 50 kg/block | ≫ 2.5× | PASS |
-| Base frame mid deflection (400 N, 600 mm) | 400 N | 0.121 mm < 1 mm | — | PASS |
-| Engine mount bolts (4× M3 A2-70 shear) | 175 N/bolt | 2113 N | 12.1× | PASS |
-| Engine mount bolts (bending, 0.35 m arm) | 224 N tension | 2113 N | 9.4× | PASS |
-| M6 rod-end (clevis, 1.25× gate) | 875 N | ≥ 1500 N rating | ≥ 1.7× | PASS |
+| Load cell (T-1, 100 kg = 981 N) | target 700 N | 981 N | 1.40× | range only |
+| Load cell vs design point | 721 N | 981 N | 1.36× | range only |
+| Rails (2× SBR12, 5g) | 193 N/rail | ≫ 50 kg/block | ≫ 2.5× | UNVERIFIED |
+| Base frame mid deflection (400 N, 600 mm) | 400 N | 0.121 mm (solid-square estimate) | — | invalid for extrusion |
+| Engine mount bolts (4× M3 A2-70 shear) | 175 N/bolt | 2113 N | 12.1× | UNVERIFIED |
+| Engine mount bolts (bending, 0.35 m arm) | 224 N tension | 2113 N | 9.4× | combined-load model missing |
+| M6 rod-end (clevis, 1.25× target) | 875 N | ≥ 1500 N rating | ≥ 1.7× | actual part/rating pending |
 | Structural resonance f_n (cell in line) | — | 179 Hz est. | above 100 Hz | confirm Phase 0.2 |
 
-**Resonance note.** The ~180 Hz engine+cell axial mode is comfortably above the 100 Hz control/logging band, so it will not alias into the thrust measurement at 500 Hz. Still, Phase 0.2 (21 §4) includes a **tap/impedance test** (hammer + accelerometer, or sine sweep) to confirm no stand mode sits at or near the engine spool frequency or its harmonics. If one is found, add mass or stiffen the bracket before any hot run.
+**Resonance correction.** The ~179 Hz value assumes cell stiffness; it is not a
+measured mode. It can alias at 100 Hz sampling; at 500 Hz the Nyquist limit is
+250 Hz and higher-frequency excitation still needs analog anti-alias filtering.
+Measure fixture/engine modes and acquisition bandwidth (26 §4).
 
 ---
 
@@ -96,7 +114,7 @@ Design loads used in the structural checks (17 §2a vibration case): **5g dynami
 | — | ECU datalink (RPM, EGT, fuel flow) | 1 | — | serial (Xicou/JetCat) | Pi UART | 10 Hz |
 | — | Trigger — AB fuel-valve command | 1 | logic | GPIO edge | Pi timestamp | — |
 
-**Channel budget (ADS1256, 8 diff channels, 24-bit):**
+**Requested logical-channel budget (NOT a valid ADS1256 pin map):**
 
 | Channel | 21 §5 | Rate |
 |---|---|---|
@@ -106,7 +124,12 @@ Design loads used in the structural checks (17 §2a vibration case): **5g dynami
 | ch6 | F-1 flow | 100 Hz |
 | ch7 | F-2 gravimetric | 10 Hz |
 
-Total ADS1256 demand: (1+1)×500 + 4×100 + 100 + 10 = **1510 SPS ≪ 30 000 SPS chip limit** — the 24-bit front end is not a bottleneck. TCs (6× MAX31856 on one SPI bus, ~60 Hz/ch) are independent of the ADS1256. P-2 and S-1 on the Pi I²C/GPIO. Single time base: Pi `monotonic_ns()` stamped at each conversion; trigger edge timestamps the AB fuel-valve command so all channels align for the 0.5 s rolling post-mean (21 §5).
+The requested aggregate is **1510 samples/s**, but this arithmetic does not
+prove acquisition performance. ADS1256 provides four differential pairs or
+eight single-ended inputs; two raw bridges plus six single-ended signals need
+ten pins. Revise hardware/pin allocation, gains and conditioning, then demonstrate
+settled conversion throughput and source timing. `monotonic_ns()` on register
+reads is an arrival timestamp, not proof of new, aligned sensor conversions.
 
 ---
 
@@ -127,7 +150,12 @@ Total ADS1256 demand: (1+1)×500 + 4×100 + 100 + 10 = **1510 SPS ≪ 30 000 SPS
 
 **Pressure transducer choice.** 21 §5 P-1/PT7 = 0–5 bar abs, ±0.5 %, ≥ 100 Hz. A **0–5 V analog** transducer (Omega PX309-100A5V class, 0–100 psi abs, ±0.25 % BFSL) drops straight onto ADS1256 diff inputs — no I²C address juggling, no SPI fan-out, full 500 Hz on PT7. 100 psi abs ≈ 6.9 bar covers the 5 bar spec with headroom. The costlier low-flow/industrial "5 bar" digital units give no accuracy or rate benefit here.
 
-**Thermocouple rate deviation (flagged, see §10).** MAX31856 converts in 16.6 ms with 60 Hz rejection ⇒ **60 Hz/channel**, against the 21 §5 ≥ 100 Hz TC log spec. The physical R-type probes used for T7 have a thermal time constant of 1–2 s, so 60 Hz electronic rate fully resolves the burst transient — the 100 Hz number exceeds what the probe itself can respond to. Two options in §10: (a) accept the deviation with rationale (recommended, saves ~$2 000), or (b) NI 9214 class module for literal spec compliance.
+**Thermocouple rate correction.** 60 Hz rejection is mains filtering, not a
+16.6 ms conversion period. The historical 60 Hz entries in the channel table
+are withdrawn; actual rate depends on the conversion/averaging mode and must
+be measured at DRDY. Probe thermal response and electronic acquisition rate
+are separate requirements. No replacement DAQ or rate deviation is qualified
+by this document (26 §4).
 
 **Trigger & interlock.** The AB fuel-valve solenoid drive line from the AB control board (16) is tapped: one copy feeds the solenoid, one edge-sensitive GPIO on the Pi starts/stops the gate-window logging and timestamps the command. The 21 §7 cooling-air interlock lives in the AB control board state machine (16 §7) — the stand DAQ records it, does not implement it.
 
@@ -135,7 +163,9 @@ Total ADS1256 demand: (1+1)×500 + 4×100 + 100 + 10 = **1510 SPS ≪ 30 000 SPS
 
 ## 6. Software (DAQ + Post-Processing)
 
-All software is committed under `tools/` (AGENTS.md §4.4) and runs on the Pi under Python 3.11+.
+The following software is **planned and absent from the repository**. It has
+not been run on the proposed DAQ hardware. The new offline flight-data screen
+in 26 is separate and does not implement any of these hardware programs.
 
 **6.1 Acquisition daemon (`daq_bench.py`)** — threaded readers, one per interface, each timestamped with `time.monotonic_ns()`:
 
@@ -168,7 +198,7 @@ Master loop writes a single CSV row per tick (`t_s, ch0..ch7, tc0..tc5, p2a, p2b
 1. **Zero:** load cell unloaded, record 60 s zero; tolerance ±2 N.
 2. **Dead-weight curve:** 0 → 900 N in ~5 steps and back (hysteresis); linearity ±1 N over 0–800 N required.
 3. **Creep:** hold 500 N for 1 h; drift < ±2 N.
-4. **Engine-off tare:** run engine idle 30 s, re-zero (absorbs line forces, pipe weight, stand friction) — 21 §7 tare procedure.
+4. **Engine-off tare:** zero with the engine stopped and production hoses/cables installed. Do not subtract actual idle thrust. Characterise line forces, friction and thermal drift through installed calibration (26 §4).
 5. **Gate window:** data taken in 0.5 s windows after settle; engine fuel momentum on the stand < 2 N, neglected (21 §6).
 6. **Rebalance:** if measured ṁ_static ≠ 0.95 kg/s, re-derive the F_s gate from the 21 §6 formula (never move the 450 N).
 
@@ -252,7 +282,10 @@ Master loop writes a single CSV row per tick (`t_s, ch0..ch7, tc0..tc5, p2a, p2b
 
 ## 10. Deviations & Open Items (flagged, not silent)
 
-1. **TC log rate (21 §5 ≥ 100 Hz vs 60 Hz hardware).** MAX31856 = 60 Hz/channel; physical R-type probe τ = 1–2 s. **Recommendation:** accept the deviation (electronic rate ≫ probe response; 0.5 s rolling mean fully resolves the burst). Compliant alternative = NI 9214 class module (cDAQ-9174 + NI-9214, ≈ $2 500) if the program insists on the letter of the spec. E2/E3 to sign off in the 21 change log.
+1. **TC log rate:** the former 60 Hz claim and proposed alternative's compliance
+   were not substantiated. Establish actual conversion/averaging latency,
+   aggregate rate and probe response separately (26 §4); then resolve the
+   requirements with E2/E3 using measured evidence.
 2. **F-1 range unit (21 §5 "0.5–6 L/h").** Static AB fuel = 23.6 g/s ⇒ **≈ 1.8 L/min**; the spec unit is wrong. Corrected to 0.5–5 L/min in this design (FLR1012, X6). Flagged for 21 §5 correction; the 0.5–6 L/h number as written is not met by any turbine meter and is not physically meaningful.
 3. **100 psi abs vs "0–5 bar" (21 §5 P-1/PT7).** 100 psi = 6.9 bar covers the 5 bar spec with margin; a dedicated 0–5 bar abs 0–5 V part is scarce. Re-verify P-1 taps (spray ring, flame holder, liner mid, exit) really see ≤ 5 bar abs in Phase 1.1 cold flow before committing all five.
 4. **T-2 probe rating vs 1300 °C spec (21 §5).** A sheathed K-type is limited to ~900–1070 °C by the Inconel sheath; the 1300 °C spec applies to bare K-type wire only. T5 measured regime (datasheet limit ≤ 750 °C, 21 §7) is well inside the sheathed rating, so the exposed-junction Inconel probe (X3) is correct for the actual engine EGT. Flagged for 21 §5 wording.

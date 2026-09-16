@@ -1,5 +1,10 @@
 # Stabilator Manufacturing Package
 
+> **2026-09-16: NOT RELEASED FOR CUTTING.** `STA_TIP.dxf`'s 2.5 mm spar hole
+> breaks out of the outer airfoil. Bearing pockets, laminate fill, hinge/servo
+> placement and mass claims below are not a closed assembly. See
+> [25 R02/R04](../25_readiness_review.md) and [27](../27_manufacturing_release.md).
+
 ## 1. Overview
 
 The stabilator is an all-moving tail surface with differential (taileron) control. Each half is a solid carbon laminate — too thin for foam-core sandwich construction.

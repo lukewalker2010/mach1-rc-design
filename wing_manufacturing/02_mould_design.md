@@ -1,5 +1,10 @@
 # Wing Mould Design — CNC Male Plug Specification
 
+> **2026-09-16: NOT RELEASED FOR TOOLING.** The wing root/area convention and
+> spar/skin envelope remain unresolved; this legacy tooling concept must be
+> regenerated against the reviewed net part. See [25 R02–R04](../25_readiness_review.md)
+> and [27](../27_manufacturing_release.md).
+
 ## 1. Mould Concept
 
 The wing skins are laid up on a **male mould** (positive plug) that replicates the external wing surface. Two moulds are needed:

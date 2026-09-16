@@ -1,11 +1,19 @@
-# Afterburner Bench Test Program (Build-Ready)
+# Afterburner Bench Test Program (Development Draft)
 
 **Doc:** 21 — Afterburner bench qualification package
 **Author:** E2 (Propulsion/Afterburner)
 **Date:** 2026-08-06
-**Status:** 🟡 baseline corrected; ready to build rig
+**Status:** 🔴 rig/DAQ, hot-section matching and qualification method OPEN (2026-09-16 review)
 **Engine:** JetCat P550-PRO + afterburner, single engine
 **Condition under test (reference):** Mach 1 @ 10,000 ft
+
+> **Review disposition (2026-09-16):** the static rig does not reproduce the
+> reference flight condition. Sections 6/8's “700 N ⇔ 450 N M1” equivalence and
+> related PASS claims are withdrawn: nozzle velocity depends on pressure ratio
+> and matching, and fuel weighing cannot establish core air mass flow. The
+> equations are retained as conditional development estimates, not qualification.
+> Use 25 R07–R13 and 26 §4 before releasing a rig or a hot-run procedure. Existing
+> film-hole/nozzle/thermal assumptions require matched CAD and measured evidence.
 
 > **CORRECTED 2026-08-06 per 18 §2 and this doc: mass flow at M1/10kft is 1.10 kg/s (not 0.69).** All thrust, fuel-flow and thermal numbers below are derived from the corrected-flow model (18 §2.1, 13 Method B). The analysis script that produced every number is `tools/ab_bench_analysis.py` (committed, AGENTS.md §4.4). Where a value cannot be derived (empirical coefficients), the test that must produce it is named.
 
@@ -48,7 +56,7 @@ Interpretation: the **boost column is net ÷ dry** (175% means net = 1.75 × 257
 
 Key results:
 - **Design point (T7 = 1800 K): net wet = 474 N** — inside the 18 §2.1 450–475 N band (design point 465 N).
-- **The 450 N gate is met even at T7 = 1700 K (451 N)** — a useful thermal margin for the first qualification runs.
+- The conditional model predicts 451 N at T7=1700 K; this is **not a verified gate result or thermal margin**.
 - The OLD model (0.69 kg/s, 17) gave ~300 N — that configuration cannot close the mission and is void.
 
 ---
@@ -204,7 +212,7 @@ Expanded from 17 §3b. **During AB bursts, thrust, EGT (T5), T7, PT7 and AB fuel
 | P-1 | Pressure transducer | 4 | 0–5 bar abs | ±0.5 % | spray ring, flame holder, liner mid, exit | 100 Hz |
 | P-2 | Differential pressure | 2 | 0–100 mbar | ±1 % | annulus inlet→exit, film plenum | 10 Hz |
 | P-3 | **PT7 — AB inlet total pressure** | 1 | 0–5 bar abs | ±0.5 % | AB inlet plane (before spray ring) | ≥100 Hz |
-| F-1 | Turbine flow meter | 1 | 0.5–6 L/h | ±0.5 % | AB fuel line | ≥100 Hz |
+| F-1 | Fuel-compatible flow meter, selection open | 1 | Cover operating flow in **L/min**, not the former L/h typo (24 §10.2) | ±0.5% requirement; qualification pending | AB fuel line | ≥100 Hz requirement |
 | F-2 | Load cell (fuel tank, gravimetric) | 1 | 0–2 kg | ±0.5 % | fuel tank hanger | 10 Hz |
 | S-1 | Servo position (iris) | 1 | 0–100 % | ±1 % | iris sync ring | 10 Hz |
 | C-1 | High-speed camera (optional) | 1 | 1000 fps | — | quartz window, liner mid | sync |
@@ -213,9 +221,10 @@ Expanded from 17 §3b. **During AB bursts, thrust, EGT (T5), T7, PT7 and AB fuel
 
 ---
 
-## 6. Thrust Measurement Method & the 450 N "at M1" Gate
+## 6. Conditional Static-to-Flight Estimate — Qualification Method Open
 
-**Method: static thrust stand, ram-drag-free, with explicit mass-flow correction.** The stand measures **static wet thrust F_s** (V∞ = 0 → no ram drag, gross = net on the stand). The M1 in-flight net is derived from F_s with the corrected-flow ratio:
+The stand measures **static wet thrust F_s**, subject to installed force-balance
+corrections. The original model estimated flight thrust with a mass-flow ratio:
 
 ```
 net_M1 = F_s × (ṁ_M1 / ṁ_static) − ṁ_M1 × V∞
@@ -225,22 +234,36 @@ net_M1 = F_s × (ṁ_M1 / ṁ_static) − ṁ_M1 × V∞
 - ṁ_static = **0.95 kg/s** (P550 datasheet 0.93 kg/s core, 13:15/67, + 0.023 kg/s AB fuel at T7 = 1800 K)
 - V∞ = 328 m/s
 
-The physical basis: gross thrust = ṁ × Vj(T7), and Vj depends on T7 and nozzle area only (not on ṁ), so for a fixed T7 the M1 gross = F_s × (ṁ_M1/ṁ_static).
+This scaling **assumes equal effective exhaust velocity** and negligible pressure
+thrust at both conditions. T7 and throat area do not establish that equality:
+total/ambient pressure, nozzle efficiency, choking and engine matching matter.
+Core air mass flow and exhaust fuel mass must be distinguished; ram momentum
+uses incoming air, not fuel supplied from the onboard tank. The original wet/core
+mass conventions and pressure term require reconciliation (25 R07).
 
-**Pass gate (derived):** require
+**Conditional development threshold** (only under the above assumptions):
 
 ```
 F_s ≥ (450 + ṁ_M1·V∞) × (ṁ_static/ṁ_M1) = (450 + 361) × 0.864 = 700 N
 ```
 
-**Static gate F_s ≥ 700 N** at T7 = 1800 K ⇔ **net_M1 ≥ 450 N.** Design point: F_s = 0.95 × 759 = **721 N** → net_M1 = 475 N (consistent with §1).
+The model gives approximately **700 N static** for its nominal 450 N flight
+target, and predicts approximately **721 N static** at T7=1800 K. Neither is a
+measured result; meeting the static target does not establish flight thrust.
 
 Notes:
-- A naive "F_s ≥ 450 + ram = 811 N" is **conservative** (it ignores the mass-flow ratio 1.16) and may be used as a stretch target, but the physically correct gate is **700 N**.
-- The gate input ṁ_static is measured on the stand (fuel-tank gravimetric + engine fuel flow); if the measured ṁ_static differs from 0.95, **re-derive the F_s gate from the formula** (do not move the 450 N).
-- **Alternative (Phase 4.8):** altitude-simulated inlet (blower producing Pt = 131.9 kPa, Tt = 322 K) measures net directly with ram subtracted. Preferred for final confirmation if the blower is available.
+- Neither 700 N nor the former 811 N “conservative” threshold qualifies flight
+  performance without the matched force/flow model and uncertainty.
+- Fuel-tank gravimetric and ECU fuel flow measure **fuel**, not core air flow.
+  Measure air flow independently using a calibrated method.
+- An inlet-condition simulator (Phase 4.8) also needs representative exhaust
+  ambient pressure, facility force corrections and engine matching; inlet
+  pressure/temperature alone do not produce a direct flight-thrust measurement.
 
-**Tare procedure:** zero load cell cold; run engine to idle 30 s, re-zero (account for line forces, pipe weight, thrust-stand friction); take data in 0.5 s windows; correct for engine fuel momentum on the stand (< 2 N, neglected in this model per 18 §2.1).
+**Tare correction:** zero with engine **off** and installed hoses/cables. Never
+re-zero running idle thrust out of the measurement. Characterise line loads,
+friction and thermal drift by installed calibration; preserve raw samples and
+document all force-balance corrections (26 §4).
 
 ---
 
@@ -262,14 +285,18 @@ Cooling-air interlock: AB fuel valve cannot open unless annulus/film cooling flo
 
 ---
 
-## 8. GATE Statement (G0, feeds 18 §6)
+## 8. Development Run Evidence (G0 Qualification Still Open)
 
-> **PASS** = **3 successful 10–20 s wet runs** (recommended 20 s each) at T7 = 1800 K, full throttle, with:
-> 1. **Static wet thrust F_s ≥ 700 N** (⇔ net wet thrust ≥ 450 N M1-equivalent, §6), AND
+> After the rig/hardware/procedure release, record **3 successful 20 s wet runs**
+> (18 G0 duration) at T7 = 1800 K, full throttle, against these development targets:
+> 1. **Static wet thrust F_s ≥ 700 N** (conditional-model target only, §6), AND
 > 2. **Outer shell temperature < 200 °C** throughout and after soak-back, AND
 > 3. **T5 ≤ 750 °C**, T7 = 1800 ±50 K, no flameout, no damage per post-run inspection (boroscope, spark gap, iris freedom).
 
 Any run that trips an abort, exceeds T5/T7/shell limits, or shows liner damage resets the counter. **If the AB delivers only ~400 N M1-equivalent, the program cannot sustain M1.05 and must stop** (18 §2.3).
+
+These records do not close the ≥450 N at-M1 contract until the flight-condition
+conversion, pressure/mass-flow terms and uncertainty have been validated.
 
 ---
 

@@ -1,5 +1,10 @@
 # Fuselage Manufacturing Package — Index
 
+> **2026-09-16: NOT RELEASED FOR TOOLING.** The revised mould table closes to
+> zero radius at station 850 mm. This index's older 200 mm bulkheads/stations
+> are also inconsistent with the 185 mm re-baseline. Required matched-geometry
+> closure: [25 R01/R16](../25_readiness_review.md); release process: [27](../27_manufacturing_release.md).
+
 **Date:** 2026-07-21
 **Purpose:** Close the manufacturing gap between design spec and build-ready data
 

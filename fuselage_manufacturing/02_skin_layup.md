@@ -1,5 +1,10 @@
 # Fuselage Skin Layup Schedule
 
+> **2026-09-16: NOT RELEASED FOR FLIGHT-PART MANUFACTURE.** Resolve the invalid
+> fuselage mould line and matched bulkhead/engine/hardpoint geometry before
+> deriving skin, bond and cure instructions. See [25 R01/R16](../25_readiness_review.md)
+> and [27](../27_manufacturing_release.md).
+
 ## 1. Zone Overview
 
 | Zone | x range (mm) | Thickness | Layup | Plies | Notes |
