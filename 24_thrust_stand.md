@@ -12,8 +12,8 @@ This does **not** demonstrate ≥450 N flight thrust; see 25 R07 and 26 §4.
 > provides four differential pairs/eight single-ended inputs, not eight pairs;
 > the proposed direct-wired sensors exceed its input pins. MAX31856's 60 Hz
 > rejection is not its conversion rate. Section 3 uses unqualified extrusion,
-> bolt and stiffness assumptions. Sections 6/11 describe programs that are
-> **not committed or implemented**. Do not order/build from these tables as a
+> bolt and stiffness assumptions. Section 6 now links implemented **offline**
+> programs; physical acquisition/control drivers remain absent. Do not build these tables as a
 > released package. Required corrections/evidence: 25 R11–R13, 26 §4 and 27.
 
 > **Scope.** This is the historical proposed rig for 21 §4 Phases 0–5, not a
@@ -163,33 +163,23 @@ by this document (26 §4).
 
 ## 6. Software (DAQ + Post-Processing)
 
-The following software is **planned and absent from the repository**. It has
-not been run on the proposed DAQ hardware. The new offline flight-data screen
-in 26 is separate and does not implement any of these hardware programs.
+The **offline** pipeline is implemented in [34](34_bench_software.md), which
+defines the current schema, CLI, acceptance semantics and limitations:
 
-**6.1 Acquisition daemon (`daq_bench.py`)** — threaded readers, one per interface, each timestamped with `time.monotonic_ns()`:
+| Program | Implemented behavior |
+|---|---|
+| `tools/daq_bench.py` | Preserve CSV/stdin acquisition events, per-channel sequence/time validation, no-clobber archive and metadata-inclusive hashes |
+| `tools/cal_bench.py` | Paired ascending/descending cycles; force-domain residual/hysteresis/repeatability and explicit criteria |
+| `tools/post_bench.py` | Selected thrust/temperature interval screen with positive uncertainty bounds, complete endpoints, source rates and raw thermal maxima |
+| `tools/log_pair_check.py` | Same run/test/config, distinct declared acquisition paths, calibrated clock evidence and separate log hashes |
 
-| Thread | Source | Output |
-|---|---|---|
-| ADS1256 | 8 diff channels @ 500 Hz (thrust/PT7) and 100 Hz (rest) | scaled engineering units |
-| MAX31856 ×6 | 6 TCs @ 60 Hz | °C, CJC applied in hardware |
-| HSC I²C ×2 | ±100 mbar | Pa |
-| ECU UART | RPM, EGT, engine fuel flow, battery V | raw + scaled |
-| GPIO edge | AB fuel-valve command | trigger timestamps |
-| Servo PWM | iris position | % |
-
-Master loop writes a single CSV row per tick (`t_s, ch0..ch7, tc0..tc5, p2a, p2b, rpm, egt, f_eng, ab_trigger, iris`). Raw data is kept for transients; steady-state values come from post-processing.
-
-**6.2 Post-processor (`post_bench.py`)** — implements the 21 §5 rule verbatim:
-- **0.5 s rolling mean** → steady-state F_s, T5, T7, PT7, flow.
-- Raw samples preserved for transients (light-up, flame-out, abort).
-- F_s gate test: `mean(F_s) over the gate window ≥ 700 N`, window = trigger-to-trigger minus 0.5 s settle (21 §6 tare/0.5 s window method).
-- F_s → net_M1 conversion per 21 §6: `net_M1 = F_s × (ṁ_M1/ṁ_static) − ṁ_M1 × V∞` with ṁ_static from the measured gravimetric + engine flow.
-- Run report (CSV + summary table) consumed by the 21 §8 gate statement and 18 §8 E2 test report.
-
-**6.3 Calibration module (`cal_bench.py`)** — dead-weight thrust calibration of the load cell: apply known masses (0, 10, 25, 50, 70, 90 kg) through the rod-end, least-squares linear fit `F = a·counts + b`, report R², hysteresis, and creep (21 §4 Phase 0.1). Gravimetric cell calibrated with water in the tank. Pressure transducers zeroed/span-checked against a hand pump + reference gauge.
-
-**6.4 Pre-run self-test** — before any hot run, the daemon runs a channel-verification script (21 §4 Phase 0.2): simulates signals on every channel, checks each reads within spec and the 500 Hz thrust path sustains rate, then arms the cooling-air interlock flag for display.
+These tools do not contain physical drivers or ignition/actuator control. They
+do not implement the former fictitious eight-differential-channel ADC loop or
+60 Hz thermocouple conversions. Source-driver timing/pin allocation still needs
+the hardware work in 33. There is **no static-to-flight thrust conversion**.
+Simulated inputs cannot establish a physical result; a selected-channel screen
+does not constitute the full G0 test suite. Fault-injection and installed
+calibration/abort evidence remain required before hot testing.
 
 ---
 

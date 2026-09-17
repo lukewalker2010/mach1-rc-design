@@ -67,16 +67,17 @@ This file is the **single source of truth for how AI tools work on this reposito
 
 ## 6. Status board (update after each session)
 
-Reviewed 2026-09-16: see `25_readiness_review.md` for evidence and R01–R16.
+Reviewed 2026-09-16: see `25_readiness_review.md` for original R01–R16 and
+`28_closure_tracker.md` / docs 29–35 for delegated implementation and review.
 Analysis regression tests are separate from physical qualification. Requirements
 and controlled mating dimensions above are unchanged; no release is implied.
 
 | Subsystem | Owner | Status | Next action |
 |---|---|---|---|
-| A. Airframe | E1 | 🔴 load arithmetic corrected; fit/CG/structure open | resolve R01–R06, validated aero/trim/flutter (R14) |
-| B. Propulsion/AB | E2 | 🔴 bench/flight matching and rig unqualified | close R07/R08/R11–R13 before hot testing |
-| C. Systems/M&V | E3 | 🟡 offline Mach/log tools tested; hardware open | qualify pressure/power/DAQ/abort and dual logs (R09–R12/R15) |
-| D. Launch/Recovery | E4 | 🔴 low-speed lift/recovery not closed | resolve R06 and demonstrate dolly/skid/chute limits |
-| E. Manufacturing/QC | E5 | 🔴 current mould/DXF failures reproduced | resolve R01–R04/R16; release matched parts using 27 records |
+| A. Airframe | E1 | 🟡 candidate geometry/load/CG tools reviewed | resolve coupled packaging/mass decision in 29–31; material/trim/flutter evidence open |
+| B. Propulsion/AB | E2 | 🟡 matching/thermal/rig models reviewed | obtain nozzle/engine pressure map and qualified pump/rig; 32/35 |
+| C. Systems/M&V | E3 | 🟡 offline bench/calibration/pair tools reviewed | correct 10–35 V engine supply, qualify exact hardware/DRDY/abort; 33/34 |
+| D. Launch/Recovery | E4 | 🟡 lift/braking/chute loads quantified | resolve landing lift and excessive M0.6 chute loads; validate hardware per 30 |
+| E. Manufacturing/QC | E5 | 🟡 record integrity checker implemented | generate reviewed matched CAD; obtain physical process/inspection evidence per 35 |
 
 Legend: 🔴 needs work · 🟡 in progress · 🟢 complete/verified

@@ -1,0 +1,24 @@
+{
+  "date": "2026-09-16",
+  "input_commit": "9db2fd0f349907120cb84006bdcf4ad082c1d5a0",
+  "scope": "Implementation workers followed by targeted technical review and principal integration; no physical qualification",
+  "reported_worker_inference_cost": 0,
+  "cost_limitations": "Zero is the sum of cost fields emitted by the seven free-model worker sessions. Review/primary-session costs and any unreported service charges are not included or claimed to be zero.",
+  "workers": [
+    {"stream": "geometry", "findings": ["R01", "R02", "R03"], "model": "opencode/mimo-v2.5-free", "session": "ses_f540c0939ffeVdxWVq1UikSaqB", "exit": "time_limit_partial", "reported_cost": 0, "completion": "completed and corrected in technical review"},
+    {"stream": "structure", "findings": ["R04", "R06", "R14"], "model": "opencode/big-pickle", "session": "ses_f540c08edffenwpptEUabrEw0R", "exit": "finished", "reported_cost": 0, "completion": "corrected in technical review"},
+    {"stream": "mass", "findings": ["R05"], "model": "opencode/mimo-v2.5-free", "session": "ses_f540c067effe6u8Zk1XAO1ex1K", "exit": "time_limit_partial", "reported_cost": 0, "completion": "completed and corrected in technical review"},
+    {"stream": "propulsion", "findings": ["R07", "R08"], "model": "opencode/big-pickle", "session": "ses_f540c0793ffe6Pn2gtiAjuqOPV", "exit": "finished", "reported_cost": 0, "completion": "corrected in technical review"},
+    {"stream": "hardware", "findings": ["R09", "R10", "R11"], "model": "opencode/big-pickle", "session": "ses_f540c064fffecSksQgiPFRcBON", "exit": "finished", "reported_cost": 0, "completion": "corrected in technical review; engine supply conflict added in principal integration"},
+    {"stream": "software", "findings": ["R12", "R15"], "model": "opencode/mimo-v2.5-free", "session": "ses_f540c0a55ffe1zeMxfNJQPkY9P", "exit": "finished", "reported_cost": 0, "completion": "critical validation and semantics defects repaired after principal review"},
+    {"stream": "manufacturing", "findings": ["R13", "R16"], "model": "opencode/mimo-v2.5-free", "session": "ses_f540c09d1ffeDH7glBKHOFcdDL", "exit": "time_limit_partial", "reported_cost": 0, "completion": "completed and corrected in technical review"}
+  ],
+  "technical_reviews": [
+    {"scope": "geometry, loads, mass", "agent_type": "general", "model": "harness default; model and cost not exposed by Task result", "session": "ses_f52f10fe9ffesqwOM5CRXJXAky"},
+    {"scope": "propulsion, hardware", "agent_type": "general", "model": "harness default; model and cost not exposed by Task result", "session": "ses_f52f10faaffe3F1MdvpcPSTTQh"},
+    {"scope": "rig, manufacturing evidence", "agent_type": "general", "model": "harness default; model and cost not exposed by Task result", "session": "ses_f52f10f88ffejkMhAqIlSr7Wdm"},
+    {"scope": "repair bench/data integrity after principal review", "agent_type": "general", "model": "harness default; model and cost not exposed by Task result", "session": "ses_f52e68cf2ffe3ycYI6N17OGKiT"}
+  ],
+  "principal_model": "opencode/gpt-6-astra",
+  "principal_checks": ["reviewed workstream reports and software source", "integrated common geometry/mass/load regression tests", "confirmed P550-PRO 10-35 V supply conflict against primary datasheet", "reviewed simulation, provenance and incomplete-evidence semantics"]
+}

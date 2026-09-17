@@ -2,6 +2,8 @@
 
 Currents/durations from the existing 23 budget. Converter efficiencies below
 are explicit planning assumptions pending hardware measurement.
+The historical 7.4 V engine branch is incompatible with the primary P550-PRO
+10–35 V specification found during review (33 §2); outputs are not sizing data.
 """
 import math
 
@@ -27,6 +29,7 @@ def estimate():
 
 
 if __name__ == "__main__":
+    print("HISTORICAL SCENARIO: 7.4 V engine branch invalid for manufacturer 10–35 V specification; see 33 §2.")
     for key, value in estimate().items():
         print(f"{key}: {value:.4f}")
     print("Declared-load estimate only: iris/drogue loads, startup, low-voltage behaviour and fuel endurance remain open.")

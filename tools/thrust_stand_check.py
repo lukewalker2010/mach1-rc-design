@@ -22,7 +22,7 @@ def main():
     print("  Four differential pairs OR eight single-ended inputs, not eight differential pairs.")
     print("  Settling, common-mode limits, gain switching and actual source timing need qualification.")
     print("MAX31856: 60 Hz is line-rejection frequency, not conversion rate. Verify datasheet mode/DRDY.")
-    print("DAQ SOFTWARE: acquisition/calibration/bench post-processing drivers are not implemented.")
+    print("DAQ SOFTWARE: offline ingestion/calibration/post-processing now implemented (34); hardware drivers remain open.")
 
 
 if __name__ == "__main__":

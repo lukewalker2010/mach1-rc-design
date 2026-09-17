@@ -18,6 +18,7 @@ Passing software checks do not constitute aircraft qualification.
 | [25 — Readiness review](25_readiness_review.md) | Reproducible findings, owners, closure deliverables and order of work |
 | [26 — Measurement validation](26_measurement_validation.md) | Implemented Mach/TAS and log screening, calibration and DAQ corrections |
 | [27 — Manufacturing release](27_manufacturing_release.md) | Part release, traveller, inspection and test evidence process |
+| [28 — Closure tracker](28_closure_tracker.md) | All R01–R16 workstreams, reviewed results, model provenance and remaining decisions |
 | [INTERFACES](INTERFACES.md) | Controlled mating dimensions and cross-team change procedure |
 | [AGENTS](AGENTS.md) | Repository instructions and subsystem status |
 
@@ -30,7 +31,14 @@ Passing software checks do not constitute aircraft qualification.
 | [21 — Afterburner bench program](21_afterburner_bench_program.md) | Development test matrix; static-to-flight conversion unvalidated |
 | [22 — BOM v2](22_bom_v2.md) | Historical $9,662 aircraft allowance; flagged parts are not purchase-qualified |
 | [23 — Systems/M&V](23_systems_mv.md) | Layout concept with measurement/power errata and open CG/failsafe work |
-| [24 — Thrust stand](24_thrust_stand.md) | Concept rig; channel, rate, structural and missing-software issues in 25/26 |
+| [24 — Thrust stand](24_thrust_stand.md) | Concept rig; revised statics in 35, DAQ hardware in 33 and implemented offline software in 34 |
+| [29 — Geometry resolution](29_geometry_resolution.md) | Exact centreline planform, continuous body candidate, finite-width containment and remaining packaging failures |
+| [30 — Structure/recovery](30_structure_recovery.md) | Distributed loads, cap fit, braking/chute energy and aeroelastic evidence |
+| [31 — Mass/CG resolution](31_mass_cg_resolution.md) | Fuel/uncertainty sweeps, coupled ballast feasibility proof and mission fuel accounting |
+| [32 — Propulsion/thermal](32_propulsion_thermal.md) | Choked-flow/pressure-thrust/energy bookkeeping and conditional thermal equilibria |
+| [33 — Instrumentation/power](33_instrumentation_power.md) | Manufacturer-source checks, candidate ranges, P550 supply conflict, ADC pin/scale/timing |
+| [34 — Bench software](34_bench_software.md) | Implemented event ingestion, force-domain calibration, static screening and concurrent-log checking |
+| [35 — Rig/manufacturing](35_manufacturing_rig.md) | Bolt/beam/anchor equilibrium and evidence-record integrity validation |
 
 ## Geometry and manufacture
 
@@ -41,6 +49,7 @@ Passing software checks do not constitute aircraft qualification.
 | [Stabilator](stabilator_manufacturing/01_manufacturing.md) | Tip spar-hole breakout; hinge/bearing packaging unresolved |
 | AB `*_step.py`, `*.step`, `*.scad` | Existing concept CAD; revised cooling, complete installed assembly and coordinate transforms require closure |
 | [Records](records/) | Blank part-release, build-traveller and test-result templates; no qualification results recorded |
+| [Proposals](proposals/) | Analytic design alternatives and source ledgers; no released replacement CAD/toolpaths |
 
 ## Run the engineering tools
 
@@ -53,12 +62,20 @@ python3 tools/design_checks.py
 python3 tools/structural_analysis.py
 python3 tools/aero_evaluation.py
 python3 tools/bom_v2_check.py
+python3 tools/geometry_candidates.py
+python3 tools/loads_recovery.py
+python3 tools/mass_mission.py
+python3 tools/propulsion_matching.py
+python3 tools/hardware_budget.py
+python3 tools/rig_loads.py
 ```
 
 `python3 tools/design_checks.py --strict` currently exits **1** because design
 failures remain. `--json` produces a machine-readable screening report. CI runs
 regressions and archives that report. For calibrated flight-data screening see
-26; no acquired flight or hot-run evidence is included in this review.
+26; bench pipeline CLI/schema are in 34. `python3 tools/release_records_check.py
+--json` exits **1** for the current header-only records. No acquired flight or
+hot-run evidence is included in this review.
 
 ## Legacy concept documents (01–17)
 

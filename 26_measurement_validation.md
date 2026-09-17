@@ -130,7 +130,8 @@ facility/inlet momentum, nozzle pressure thrust and installation effects under
 a documented force balance. A static 700 N result alone cannot establish the
 450 N at-M1 flight requirement.
 
-The promised hardware drivers and bench calibration/post-processing programs in
-24 are not implemented. The new offline flight screen is not a replacement for
-those programs. Raw T5/T7 sampling rates must be demonstrated independently of
-the CSV write rate and independently of physical probe response time.
+Follow-on work implemented **offline** bench ingestion, calibration,
+post-processing and concurrent-log checks: see 34 for the actual event schema
+and CLI. Hardware drivers/control remain unimplemented. The flight screen in
+this document is a separate air-data format. Raw T5/T7 sampling rates must be
+demonstrated independently of CSV write rate and physical probe response time.

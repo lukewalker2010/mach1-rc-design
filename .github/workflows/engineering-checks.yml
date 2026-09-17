@@ -14,7 +14,17 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Publish current design screening (physical failures are expected)
         run: python tools/design_checks.py --json > design-screening.json
+      - name: Inspect manufacturing evidence (empty records remain incomplete)
+        shell: bash
+        run: |
+          status=0
+          python tools/release_records_check.py --json > manufacturing-records.json || status=$?
+          if [ "$status" -gt 1 ]; then
+            exit "$status"
+          fi
       - uses: actions/upload-artifact@v4
         with:
-          name: design-screening
-          path: design-screening.json
+          name: engineering-screening
+          path: |
+            design-screening.json
+            manufacturing-records.json

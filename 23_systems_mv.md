@@ -45,10 +45,14 @@ criterion. Ordinary SD media are not write-once storage.
 
 ## 4. Proposed power architecture — converter selection open
 
-Retain the **concept** of a 2S 5000 mAh main pack, direct servo/ECU rail, regulated
-5 V logic rail and separate isolated 2S CDI pack. Exact component input ranges,
-grounding/isolation and low-pack-voltage behaviour require actual datasheets and
-a pin-to-pin schematic. A regulator by itself does not provide galvanic isolation.
+The direct **servo/ECU 2S rail concept is withdrawn for the engine branch**.
+Cross-workstream primary-source review found that the P550-PRO datasheet V1.1
+02/2023 specifies **10–35 VDC**, above even 8.4 V charged 2S. See 33 §2 and
+`tools/hardware_budget.py`. Confirm the installed variant and startup/current
+requirements before choosing its supply. The 2S servo, regulated 5 V logic and
+separate CDI concepts require their own actual component/pin-to-pin review.
+A regulator by itself does not provide galvanic isolation. Revise the resulting
+power mass and CG together; no replacement supply is qualified here.
 
 The dedicated AB pump/solenoid need a regulated **12 V rail**. The former
 “Pololu D24V50F12 2.5 A boost” selection is **withdrawn**: the exact order code
@@ -63,6 +67,8 @@ drive interface. BOM S20 is now a cost allowance with supplier/part TBD.
 
 `tools/power_budget.py`, also used by `tools/bom_v2_check.py`, reproduces these
 planning values from the earlier load table. They are **not measured ratings**.
+The engine's assumed 7.4 V current row below is now a **rejected historical
+scenario**, not a sizing basis for the manufacturer's 10–35 V supply (33 §2).
 
 | Load | Assumed rail / current |
 |---|---|

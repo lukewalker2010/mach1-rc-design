@@ -1,0 +1,7 @@
+phase,duration_s,engine_flow_g_s,ab_flow_g_s,initial_fuel_kg,initial_cg_m
+climb_dry,30,15,0,1.620,0.974808824
+accel_wet,5,15,20,1.170,0.992768061
+dash_m1,5,15,20,0.995,1.000088632
+decel_dry,10,15,0,0.820,1.007609375
+cruise_return,30,15,0,0.670,1.014221344
+approach,10,15,0,0.220,1.035032787

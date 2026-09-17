@@ -69,6 +69,13 @@ parameters must come from the released hot-section design, not a generic recipe.
 
 ## 4. Test card and evidence
 
+`python3 tools/release_records_check.py --json` now checks the existing CSV
+schemas, required evidence files/hashes, Git provenance, path confinement and
+cross-record linkage. Current header-only templates return **INCOMPLETE**
+(exit 1). A populated internally consistent set returns only
+**CONSISTENT_UNVERIFIED**, never an authenticated hardware release. Exact
+conventions and limitations are in [35](35_manufacturing_rig.md).
+
 Use `records/test_card.md` for every coupon, structural, bench, ground or flight
 test. Link raw data and calibration certificates from `records/test_results.csv`.
 Record configuration/serials, preconditions, the actual test procedure, acceptance

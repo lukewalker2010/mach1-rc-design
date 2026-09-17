@@ -39,6 +39,14 @@ Priority follows 18 §7: P0 before relevant build, P1 before flight. All rows be
 are **OPEN** until the named deliverable is reviewed and linked to measured or
 analytical evidence. A proposed test is not evidence that the test passed.
 
+**Follow-on implementation:** all findings have now been assigned and addressed
+in the reviewed workstreams **29–35**; current subitem status and decisions are
+in [28](28_closure_tracker.md). The original finding text below records the
+reviewed baseline. In particular R12's missing offline software has since been
+implemented (34), while acquisition drivers/control hardware remain unqualified.
+R10 additionally includes the primary P550-PRO **10–35 V** supply requirement,
+which invalidates the former direct-2S engine branch (33 §2).
+
 | ID | Priority / owner | Finding and source | Required closure deliverable |
 |---|---|---|---|
 | R01 | P0 E1/E5 | Mould §1.5 gives **R=0 at x=850 mm**. The forebody pinches completely shut; the adjoining cosine does not repair connectivity or tangent continuity. `FUSE-CONTINUITY`. | Reviewed continuous outer/inner mould lines, intake/engine/structure clearance sections, matched bulkheads, draft/parting and complete assembly STEP. Resolve nose-law ambiguity in 18 §3.1 before cutting tooling. |
