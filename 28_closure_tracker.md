@@ -15,6 +15,9 @@ in [25](25_readiness_review.md).
 - **R05 fuel-station candidates** close both CG endpoints only if the fuel
   centroid moves to ≥0.66 m (A/B) or ≥0.81 m for margin; packaging and
   uncertainty remain unresolved. See `proposals/mass/cg_closure_candidates.md`.
+- **R01 continuous body candidate** removes the x = 850 mm pinch with a
+  smoothstep law (53-station table in `proposals/geometry/`); the intake still
+  does not fit, so R01 remains open.
 - **No R01–R16 finding is closed.** The remaining blockers are unchanged:
   geometry/packaging, structure, installed thrust, measurement hardware,
   recovery loads and manufacturing evidence.
