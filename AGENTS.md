@@ -69,6 +69,9 @@ This file is the **single source of truth for how AI tools work on this reposito
 
 Reviewed 2026-09-16: see `25_readiness_review.md` for original R01–R16 and
 `28_closure_tracker.md` / docs 29–35 for delegated implementation and review.
+2026-11-08: AB CAD is now import-validated and the STEP gate runs in CI (36);
+cooling schedule and CG fuel-station inputs updated. Subsystem statuses below
+are unchanged — no physical evidence has been added.
 Analysis regression tests are separate from physical qualification. Requirements
 and controlled mating dimensions above are unchanged; no release is implied.
 

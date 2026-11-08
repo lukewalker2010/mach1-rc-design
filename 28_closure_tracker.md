@@ -5,8 +5,21 @@
 principal-agent consistency review. Findings and full closure criteria remain
 in [25](25_readiness_review.md).
 
-## Status semantics
+## 2026-11-08 progress (CAD and closure inputs)
 
+- **AB CAD repaired and import-validated.** All five parts and the assembly are
+  single solids, z = 0–385 mm; `tools/step_validate.py` runs in CI. See 36.
+- **R08 cooling schedule recomputed** at the corrected 1.10 kg/s core flow:
+  112 holes in 5 rows (2.51% bleed), not the legacy 20/65; iris section
+  reconciled to 3 + 29 + 3 = 35 mm. Physical thermal evidence remains open.
+- **R05 fuel-station candidates** close both CG endpoints only if the fuel
+  centroid moves to ≥0.66 m (A/B) or ≥0.81 m for margin; packaging and
+  uncertainty remain unresolved. See `proposals/mass/cg_closure_candidates.md`.
+- **No R01–R16 finding is closed.** The remaining blockers are unchanged:
+  geometry/packaging, structure, installed thrust, measurement hardware,
+  recovery loads and manufacturing evidence.
+
+## Status semantics
 - **ASSIGNED:** a worker owns implementation; no result accepted yet.
 - **IMPLEMENTED / REVIEWED:** a specific calculation, software or document gap
   is addressed and its checks reviewed. This does not release physical hardware.
