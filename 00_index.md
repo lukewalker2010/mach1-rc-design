@@ -39,6 +39,7 @@ Passing software checks do not constitute aircraft qualification.
 | [33 — Instrumentation/power](33_instrumentation_power.md) | Manufacturer-source checks, candidate ranges, P550 supply conflict, ADC pin/scale/timing |
 | [34 — Bench software](34_bench_software.md) | Implemented event ingestion, force-domain calibration, static screening and concurrent-log checking |
 | [35 — Rig/manufacturing](35_manufacturing_rig.md) | Bolt/beam/anchor equilibrium and evidence-record integrity validation |
+| [36 — AB CAD repair](36_afterburner_cad_repair.md) | STEP import defects repaired; all parts and assembly now single solids, z = 0–385 mm |
 
 ## Geometry and manufacture
 
@@ -47,7 +48,7 @@ Passing software checks do not constitute aircraft qualification.
 | [Wing](wing_manufacturing/00_index.md) | R1–R5 spar-hole containment fails; CSV root/area convention conflicts; legacy layup and mould data |
 | [Fuselage](fuselage_manufacturing/00_index.md) | Mould pinches to zero radius at station 850 mm; matched assembly/tooling unresolved |
 | [Stabilator](stabilator_manufacturing/01_manufacturing.md) | Tip spar-hole breakout; hinge/bearing packaging unresolved |
-| AB `*_step.py`, `*.step`, `*.scad` | Existing concept CAD; revised cooling, complete installed assembly and coordinate transforms require closure |
+| AB `*_step.py`, `*.step`, `*.scad` | Repaired and import-validated (36): each part and the assembly are single solids. Cooling balance, hot clearances and petal motion still require closure |
 | [Records](records/) | Blank part-release, build-traveller and test-result templates; no qualification results recorded |
 | [Proposals](proposals/) | Analytic design alternatives and source ledgers; no released replacement CAD/toolpaths |
 
@@ -68,6 +69,7 @@ python3 tools/mass_mission.py
 python3 tools/propulsion_matching.py
 python3 tools/hardware_budget.py
 python3 tools/rig_loads.py
+python3 tools/step_validate.py
 ```
 
 `python3 tools/design_checks.py --strict` currently exits **1** because design

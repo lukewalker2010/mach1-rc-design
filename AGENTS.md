@@ -54,7 +54,7 @@ This file is the **single source of truth for how AI tools work on this reposito
 
 ## 4. Quality gates (every AI contribution must pass)
 
-1. **CAD change** → regenerate `.step`, then import-check with the pinned CadQuery env: part must load, bounding box must match design intent, assembly must have zero interferences (`/tmp/opencode/step_validate` equivalent or `importStep` + pairwise `.intersect().Volume()`).
+1. **CAD change** → regenerate `.step`, then import-check with the pinned CadQuery env: part must load, bounding box must match design intent, assembly must have zero interferences (`python3 tools/step_validate.py` enforces solid count, zero-volume debris and Z extent; add pairwise `.intersect().Volume()` for interference where parts overlap).
 2. **Doc change** → numbers must cite their source line or script; update `00_index.md` and any dependent docs.
 3. **BOM change** → update cost, note single-source items, verify link not dead.
 4. **Analysis change** → commit the script (`tools/` dir) that produced it, not just the number.

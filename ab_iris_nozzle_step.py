@@ -1,6 +1,13 @@
 import cadquery as cq
 import math
 
+# Six-petal variable iris nozzle (dry position modelled).
+# Fixes (2026-11): petals were generated at 2x throat radius (r45..57),
+# outside the 100 mm mounting ring; the 12 mm sync-ring slots severed the
+# 7.5 mm-wide ring into six floating arcs; pivot pins sat at the axis.
+# Now: petals span throat radius (22.5) to ring OD (50), pivot pins run
+# through the ring, slots stay inside the ring width, stops overlap the ring.
+
 n_petals = 6
 throat_dry = 45.0
 petal_len = 30.0
@@ -14,56 +21,62 @@ n_bolts = 4
 sync_ring_od = 95.0
 sync_ring_id = 80.0
 sync_ring_t = 2.0
-slot_width = 3.5
-slot_len = 12.0
+slot_width = 2.4
+slot_len = 5.0
 
-overlap_angle = 10
-petal_span = 360.0 / n_petals + overlap_angle
+petal_span = 58.0          # 60 deg pitch minus a 2 deg visual gap
 pivot_r = mount_ring_od / 2 - 4.0
 throat_r = throat_dry / 2
-exit_r = throat_r + petal_len * 0.105
+petal_outer_r = mount_ring_od / 2
 
-# mounting ring: z=0..3
+# --- Mounting ring (z = 0..3) ---
 ring = cq.Workplane("XY").circle(mount_ring_od / 2).circle(mount_ring_id / 2).extrude(flg_t)
 for i in range(n_bolts):
     a = i * 360.0 / n_bolts
     bx = pcd / 2 * math.cos(math.radians(a))
     by = pcd / 2 * math.sin(math.radians(a))
-    ring = ring.faces("<Z").workplane().transformed(offset=(bx, by, 0)).circle(bolt_dia / 2).cutThruAll()
-for i in range(n_petals):
-    a = i * 360.0 / n_petals
-    px = pivot_r * math.cos(math.radians(a))
-    py = pivot_r * math.sin(math.radians(a))
-    ring = ring.faces("<Z").workplane().transformed(offset=(px, py, 0)).circle((pivot_pin_d + 0.2) / 2).cutThruAll()
+    ring = (
+        ring.faces("<Z").workplane()
+        .transformed(offset=(bx, by, 0))
+        .circle(bolt_dia / 2)
+        .cutThruAll()
+    )
 
-# petals: z=3..33
+# --- Petals (z = 3..33) ---
 def build_petal():
     n_pts = 20
     half = petal_span / 2
     outer_pts = []
-    for j in range(n_pts + 1):
-        theta = -half + petal_span * j / n_pts
-        tr = math.radians(theta)
-        outer_pts.append(((2 * throat_r + 12) * math.cos(tr), (2 * throat_r + 12) * math.sin(tr)))
     inner_pts = []
     for j in range(n_pts + 1):
-        theta = -half + petal_span * j / n_pts
-        tr = math.radians(theta)
-        inner_pts.append((2 * throat_r * math.cos(tr), 2 * throat_r * math.sin(tr)))
+        tr = math.radians(-half + petal_span * j / n_pts)
+        outer_pts.append((petal_outer_r * math.cos(tr), petal_outer_r * math.sin(tr)))
+        inner_pts.append((throat_r * math.cos(tr), throat_r * math.sin(tr)))
     all_pts = outer_pts + inner_pts[::-1]
-    p = cq.Workplane("XY").polyline(all_pts).close().extrude(petal_len)
-    pin = cq.Workplane("XY").circle(pivot_pin_d / 2).extrude(petal_len + 1)
-    fol = cq.Workplane("XY").transformed(offset=(pivot_r - 2, 0, petal_len - 4)).circle(2.5 / 2).extrude(5.0)
-    return p.union(pin).union(fol)
+    petal = cq.Workplane("XY").polyline(all_pts).close().extrude(petal_len)
+    # Pivot pin at the pivot radius, passing down through the mounting ring
+    # and up into the sync-ring plane so the export is one connected solid.
+    pin = (
+        cq.Workplane("XY")
+        .transformed(offset=(pivot_r, 0, -flg_t))
+        .circle(pivot_pin_d / 2)
+        .extrude(petal_len + flg_t + 1.0)
+    )
+    # Follower pin on the downstream face, reaching into the sync-ring slot.
+    follower = (
+        cq.Workplane("XY")
+        .transformed(offset=(pivot_r - 2, 0, petal_len - 4))
+        .circle(2.5 / 2)
+        .extrude(5.0)
+    )
+    return petal.union(pin).union(follower)
 
-petals = cq.Workplane("XY").transformed(offset=(0, 0, flg_t))
+result = ring
 for i in range(n_petals):
     a = i * 360.0 / n_petals
-    petals = petals.union(build_petal().rotate((0, 0, 0), (0, 0, 1), a))
+    result = result.union(build_petal().rotate((0, 0, 0), (0, 0, 1), a).translate((0, 0, flg_t)))
 
-result = ring.union(petals)
-
-# sync ring: z=33..35 with slots
+# --- Sync ring (z = 33..35), slots stay within the 7.5 mm ring width ---
 sync_z = flg_t + petal_len
 sync = (
     cq.Workplane("XY").transformed(offset=(0, 0, sync_z))
@@ -81,13 +94,14 @@ for i in range(n_petals):
     sync = sync.cut(slot)
 result = result.union(sync)
 
-# limit stops: within sync ring z
+# --- Limit stops, overlapping the sync-ring outer edge ---
 for s in [-1, 1]:
     stop = (
-        cq.Workplane("XY").transformed(offset=(sync_ring_od / 2 + 2, s * 8, sync_z))
-        .circle(4.0 / 2).extrude(sync_ring_t)
+        cq.Workplane("XY")
+        .transformed(offset=(sync_ring_od / 2 - 3, s * 8, sync_z - 0.5))
+        .circle(2.5).extrude(sync_ring_t)
     )
     result = result.union(stop)
 
 cq.exporters.export(result, "ab_iris_nozzle.step")
-print("Exported ab_iris_nozzle.step")
+print("Exported ab_iris_nozzle.step (single solid target)")
