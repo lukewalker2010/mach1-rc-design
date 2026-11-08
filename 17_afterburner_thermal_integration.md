@@ -1,5 +1,12 @@
 # Afterburner: Thermal Analysis, Integration Design & Test Program
 
+> **2026-11-08 erratum:** the heat-flux and fuel-flow numbers below use
+> ṁ = 0.69 kg/s. Doc 18 §2.1 / AGENTS §3 correct the M1/10 kft core flow to
+> **1.10 kg/s** and AB fuel to ~27 g/s. The cooling-hole schedule has been
+> recomputed at that flow in `tools/ab_cooling.py` (112 holes, 5 rows,
+> 2.51% bleed) and in the liner CAD. Other thermal results here remain
+> first-order and must be re-run before release.
+
 **Date:** 2026-07-27 (corrected 2026-08-06)
 **Engine:** JetCat P550-PRO with afterburner
 **Condition:** Mach 1 @ 10,000 ft (3,048 m)

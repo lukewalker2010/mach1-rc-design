@@ -28,3 +28,14 @@ jobs:
           path: |
             design-screening.json
             manufacturing-records.json
+  cad-geometry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install OpenCascade bindings (no CadQuery/VTK needed)
+        run: pip install cadquery-ocp==7.9.3.1.1
+      - name: Enforce STEP gate (single solids, no debris, expected Z extent)
+        run: python tools/step_validate.py

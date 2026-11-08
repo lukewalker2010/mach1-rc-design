@@ -10,7 +10,7 @@ import math
 
 n_petals = 6
 throat_dry = 45.0
-petal_len = 30.0
+petal_len = 29.0
 pivot_pin_d = 3.0
 mount_ring_od = 100.0
 mount_ring_id = 84.0
@@ -20,7 +20,7 @@ bolt_dia = 4.3
 n_bolts = 4
 sync_ring_od = 95.0
 sync_ring_id = 80.0
-sync_ring_t = 2.0
+sync_ring_t = 3.0
 slot_width = 2.4
 slot_len = 5.0
 

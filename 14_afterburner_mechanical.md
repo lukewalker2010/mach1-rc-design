@@ -406,7 +406,7 @@ Concentric inner liner + outer shell with film cooling.
 | Shell ID | 90.0 mm | |
 | Shell wall | 1.5 mm | 304 stainless steel |
 | Annular gap | 5.0 mm | Cooling air passage |
-| Cooling holes | 20 × 1.0 mm | At inlet end, circumferential |
+| Cooling holes | 112 × 1.0 mm (5 rows) | Sizing per `tools/ab_cooling.py`; 2.51% of the corrected 1.10 kg/s core flow |
 | Total length | 200.0 mm | |
 
 ### OpenSCAD: `ab_liner.scad`
@@ -481,7 +481,7 @@ assembly();
 1. **Liner**: Roll 1.0 mm Inconel 625 sheet to 80 mm ID tube, TIG weld longitudinal seam.
 2. **Shell**: Roll 1.5 mm 304 SS sheet to 90 mm ID tube, TIG weld seam.
 3. **Spacers**: 3× circumferential spacer ribs (5 mm tall, 3 mm wide) at 50 mm intervals keep the liner centered in the shell. Weld to shell only (liner floats axially for thermal expansion).
-4. **Cooling holes**: Laser drill or EDM 20 holes, 1.0 mm dia, at 30° angle, 10 mm from inlet.
+4. **Cooling holes**: Laser drill or EDM 112 holes, 1.0 mm dia, staggered in 5 rows at 30° downstream (see `tools/ab_cooling.py`).
 5. **Cooling air inlet**: Weld 10 mm OD 304 SS tube into shell at mid-length (120 mm from inlet). Tap for 1/8" NPT.
 
 ---
@@ -497,14 +497,14 @@ assembly();
 | Petal count | 6 | Equally spaced |
 | Throat (closed) | 45 mm dia | Dry operation |
 | Throat (open) | 55 mm dia | Wet operation (+49% area) |
-| Petal length | 30.0 mm | Axial |
+| Petal length | 29.0 mm | Axial |
 | Petal thickness | 1.5 mm | Inconel 625 |
 | Overlap angle | 10° | Per side, for sealing |
 | Pivot pin | 3.0 mm | Inconel rod |
 | Bushing | 5.0 mm OD | Zirconia ceramic |
 | Sync ring OD/ID | 95/80 mm | 304 SS |
-| Sync ring thick | 5.0 mm | |
-| Slot length | 12.0 mm | For follower pin travel |
+| Sync ring thick | 3.0 mm | Fits the 35 mm iris section (3 + 29 + 3) |
+| Slot length | 5.0 mm | Stays inside the 7.5 mm sync-ring width |
 | Servo pushrod | 30.0 mm | |
 
 ### OpenSCAD: `ab_iris_nozzle.scad`
@@ -516,7 +516,7 @@ assembly();
 n_petals     = 6;      // Number of petals
 throat_dry   = 45.0;   // Throat diameter, dry (closed)
 throat_wet   = 55.0;   // Throat diameter, wet (open)
-petal_len    = 30.0;   // Petal axial length
+petal_len    = 29.0;   // Petal axial length
 petal_t      = 1.5;    // Petal thickness (Inconel 625)
 pivot_pin_d  = 3.0;    // Pivot pin diameter (Inconel rod)
 bushing_d    = 5.0;    // Ceramic bushing OD
@@ -529,9 +529,9 @@ n_bolts      = 4;
 
 sync_ring_od = 95.0;   // Sync ring outer diameter
 sync_ring_id = 80.0;   // Sync ring inner diameter
-sync_ring_t  = 5.0;    // Sync ring thickness (304 SS)
+sync_ring_t  = 3.0;    // Sync ring thickness (304 SS)
 slot_width   = 3.5;    // Slot width for petal follower pins
-slot_len     = 12.0;   // Slot radial length
+slot_len     = 5.0;   // Slot radial length
 
 servo_arm_len = 30.0;  // Pushrod length from servo to sync ring
 pushrod_d     = 3.0;   // Pushrod diameter

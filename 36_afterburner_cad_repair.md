@@ -57,12 +57,14 @@ skips when OCP is not installed, so the standard-library CI is unaffected).
 
 ## 4. Remaining discrepancies (not resolved here)
 
-- Sync-ring thickness is modelled **2 mm** so the iris fits the 35 mm section;
-  doc 14 specifies 5 mm. One of the two documents must change before release.
-- Film-cooling holes remain the legacy **20-hole** row; 21/32 discuss a
-  105–115-hole revision. The thermal case must be re-run before either is cut.
 - The iris is modelled at the **dry** position only. Travel, overlap, hot/cold
-  clearance and fail direction are unverified (25 R08).
+  clearance and fail direction are unverified (25 R08); a wet-position model is
+  still required.
+- Film cooling now uses the 112-hole / 5-row schedule from `tools/ab_cooling.py`
+  (2.51% of the 1.10 kg/s core flow). The thermal case still needs a proper
+  transient/soak-back solution; the hole count is an interim first-order result.
+- Sync-ring thickness is now **3 mm** with **29 mm** petals (3 + 29 + 3 = 35 mm);
+  doc 14 has been aligned. This is a CAD fit decision, not a structural release.
 - The assembly joint ring is a CAD connection artifact, not a released part.
 - No material, process, tolerance or physical evidence is implied by a clean
   STEP import. See 25/27.
