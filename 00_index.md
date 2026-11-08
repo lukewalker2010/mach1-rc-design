@@ -70,6 +70,8 @@ python3 tools/propulsion_matching.py
 python3 tools/hardware_budget.py
 python3 tools/rig_loads.py
 python3 tools/step_validate.py
+python3 tools/ab_cooling.py
+python3 tools/cg_candidates.py
 ```
 
 `python3 tools/design_checks.py --strict` currently exits **1** because design

@@ -133,3 +133,15 @@ E1/E3 must select a coupled mass/fuel/layout solution and component boundaries;
 I-01/I-04/I-06/I-07 and recovery/propulsion impacts require owner review.
 Physical weigh-off and Mach-dependent neutral point/trim/control authority
 remain independent requirements. The principal owns global documentation integration.
+
+### 2026-11 addendum — coupled fuel-station candidates
+
+`proposals/mass/cg_closure_candidates.md` (tool `tools/cg_candidates.py`)
+extends §2 by treating the fuel centroid as the free variable. With dry CG
+pinned at the 0.995 m limit, the full-fuel constraint gives a minimum tank
+centroid of **0.6592 m** at 13.60 kg. Three constructive candidates then close
+both endpoints: (A) fuel @ 0.66 m + 1.68 kg nose ballast, MTOW 14.28 kg;
+(B) fuel @ 0.66 m + engine @ 1.076 m, MTOW 13.60 kg; (A-margin) fuel @ 0.81 m
++ 1.82 kg ballast, MTOW 14.42 kg with 20 mm margin. A and B sit exactly on the
+boundary and are not robust to the §3 uncertainty; packaging is unresolved.
+No station is changed here.
