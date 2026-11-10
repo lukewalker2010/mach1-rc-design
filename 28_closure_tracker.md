@@ -18,6 +18,10 @@ in [25](25_readiness_review.md).
 - **R01 continuous body candidate** removes the x = 850 mm pinch with a
   smoothstep law (53-station table in `proposals/geometry/`); the intake still
   does not fit, so R01 remains open.
+- **R02/R04 fit-first wing candidate** moves the spar to 50% chord, sizes a
+  tapered closed box from actual cap separation and replaces breakout holes
+  with contained front/rear rib DXFs (37). Strength, buckling, bond and
+  material evidence remain open.
 - **No R01–R16 finding is closed.** The remaining blockers are unchanged:
   geometry/packaging, structure, installed thrust, measurement hardware,
   recovery loads and manufacturing evidence.

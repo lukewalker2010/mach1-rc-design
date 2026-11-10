@@ -157,3 +157,12 @@ invented flutter factor and numerical acceptance policy, false full-suite /
 commit claims and physical I-04 load/qualification claims.
 Focused tests cover conservation at both cuts, load signs, cap force couples,
 footprints, units and invalid inputs. Physical R04/R06/R14 deliverables remain open.
+
+### 2026-11 addendum — fit-first box-spar candidate
+
+[37](37_box_spar_candidate.md) implements a candidate at the maximum-thickness
+station (50% chord) with tapered caps and two box-side shear walls. Iterated
+cap widths fit at all seven stations under the 9g/150 N·m screen; front/rear
+rib DXFs avoid the failed through-holes. The 400 MPa stress is a sensitivity,
+not an allowable. Buckling, laminate, bond, joint, manufacturing and physical
+proof remain open; R04 is not closed.

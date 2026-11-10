@@ -40,6 +40,7 @@ Passing software checks do not constitute aircraft qualification.
 | [34 — Bench software](34_bench_software.md) | Implemented event ingestion, force-domain calibration, static screening and concurrent-log checking |
 | [35 — Rig/manufacturing](35_manufacturing_rig.md) | Bolt/beam/anchor equilibrium and evidence-record integrity validation |
 | [36 — AB CAD repair](36_afterburner_cad_repair.md) | STEP import defects repaired; all parts and assembly now single solids, z = 0–385 mm |
+| [37 — Wing box-spar candidate](37_box_spar_candidate.md) | Fit-first 50%-chord closed box, sized caps and contained front/rear rib DXFs; laminate and joint qualification open |
 
 ## Geometry and manufacture
 
@@ -73,6 +74,7 @@ python3 tools/step_validate.py
 python3 tools/ab_cooling.py
 python3 tools/cg_candidates.py
 python3 tools/fuselage_profile.py
+python3 tools/wing_box_spar.py
 ```
 
 `python3 tools/design_checks.py --strict` currently exits **1** because design
