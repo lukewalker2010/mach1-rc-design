@@ -1,7 +1,7 @@
 # Mach 1 RC Aircraft — Design Package Index
 
 **Project:** single P550-PRO + afterburner, level Mach 1 mission.
-**Reviewed:** 2026-09-16.
+**Reviewed:** 2026-09-16. **Repository check:** 2026-11-13 (199 tests pass, CI green).
 **Status:** engineering development — **not released for aircraft manufacture,
 hot testing or flight**. [Read the readiness review first](25_readiness_review.md).
 

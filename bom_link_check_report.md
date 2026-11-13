@@ -2,6 +2,8 @@
 
 **Checked:** 2026-07-23  
 **Source:** `09_bom_with_links.md`  
+**Scope:** historical legacy BOM only. The current aircraft BOM is
+`22_bom_v2.md`; its flagged parts remain unpurchase-qualified (see 22 and 25 R09/R10).  
 **Method:** `web_fetch` on every unique URL extracted from the BOM
 
 ---

@@ -2,7 +2,8 @@
 
 **Project:** Path 2 — P550-PRO Level Flight Mach 1
 **Date:** July 2026
-**Status:** Design Complete
+**Status:** Superseded — retained for design history. See `25_readiness_review.md`;
+this document is not fabrication or flight authority.
 
 ---
 

@@ -143,5 +143,9 @@ Run `python3 -m unittest discover -s tests -v`, plus the analysis CLIs listed in
 manufacturer engine voltage range. `design_checks.py --strict` still returns 1
 for original physical design failures; `release_records_check.py --json` returns
 1 for empty records. CI distinguishes those expected incomplete screens from
-malformed-input/tool failures. Integrated test count/result is recorded after
-the final verification run below.
+malformed-input/tool failures.
+
+**Verification run 2026-11-13:** 199 tests pass on `main` at `57e57b0`
+(`python3 -m unittest discover -s tests`); the `Engineering checks` workflow is
+green on that commit. All relative document links resolve. Passing software
+checks remain separate from physical qualification.

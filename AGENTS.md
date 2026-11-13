@@ -68,12 +68,15 @@ This file is the **single source of truth for how AI tools work on this reposito
 ## 6. Status board (update after each session)
 
 Reviewed 2026-09-16: see `25_readiness_review.md` for original R01–R16 and
-`28_closure_tracker.md` / docs 29–35 for delegated implementation and review.
+`28_closure_tracker.md` / docs 29–37 for delegated implementation and review.
 2026-11-08: AB CAD is now import-validated and the STEP gate runs in CI (36);
-cooling schedule and CG fuel-station inputs updated. Subsystem statuses below
-are unchanged — no physical evidence has been added.
-Analysis regression tests are separate from physical qualification. Requirements
-and controlled mating dimensions above are unchanged; no release is implied.
+cooling schedule and CG fuel-station inputs updated. R02/R04 fit-first box-spar
+candidate added (37). Subsystem statuses below are unchanged — no physical
+evidence has been added.
+2026-11-13: repository verification — 199 tests pass, CI green at `57e57b0`,
+all relative document links resolve. Analysis regression tests are separate
+from physical qualification. Requirements and controlled mating dimensions
+above are unchanged; no release is implied.
 
 | Subsystem | Owner | Status | Next action |
 |---|---|---|---|

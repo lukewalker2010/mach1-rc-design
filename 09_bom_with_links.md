@@ -1,5 +1,9 @@
 # Mach 1 RC Aircraft — Complete Bill of Materials with Purchase Links
 
+> **Historical (2026-07-21):** retained for source/link history. The current
+> aircraft allowance is `22_bom_v2.md`; flagged parts there remain
+> unpurchase-qualified.
+
 **Updated:** 2026-07-21
 **Total Budget:** ~$7,700
 

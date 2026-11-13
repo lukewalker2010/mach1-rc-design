@@ -1,5 +1,8 @@
 # Bill of Materials and Build Sequence
 
+> **Historical:** the current aircraft allowance is `22_bom_v2.md`; this legacy
+> BOM is retained for design history and is not a purchase list.
+
 ## 1. Bill of Materials
 
 ### 1.1 Major Components
