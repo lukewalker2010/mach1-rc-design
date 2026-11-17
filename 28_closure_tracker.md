@@ -22,6 +22,9 @@ in [25](25_readiness_review.md).
   tapered closed box from actual cap separation and replaces breakout holes
   with contained front/rear rib DXFs (37). Strength, buckling, bond and
   material evidence remain open.
+- **R02/I-05 stabilator candidate** tapers the spar 2.5→1.4 mm and moves
+  hinges to an external clevis, giving positive tip margin with no bearing
+  pockets (38). Clevis loads, laminate and flutter evidence remain open.
 - **No R01–R16 finding is closed.** The remaining blockers are unchanged:
   geometry/packaging, structure, installed thrust, measurement hardware,
   recovery loads and manufacturing evidence.

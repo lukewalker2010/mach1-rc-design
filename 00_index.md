@@ -41,6 +41,7 @@ Passing software checks do not constitute aircraft qualification.
 | [35 — Rig/manufacturing](35_manufacturing_rig.md) | Bolt/beam/anchor equilibrium and evidence-record integrity validation |
 | [36 — AB CAD repair](36_afterburner_cad_repair.md) | STEP import defects repaired; all parts and assembly now single solids, z = 0–385 mm |
 | [37 — Wing box-spar candidate](37_box_spar_candidate.md) | Fit-first 50%-chord closed box, sized caps and contained front/rear rib DXFs; laminate and joint qualification open |
+| [38 — Stabilator candidate](38_stabilator_candidate.md) | Tapered 2.5→1.4 mm spar plus external clevis removes tip breakout and bearing pockets; strength/flutter open |
 
 ## Geometry and manufacture
 
@@ -75,6 +76,7 @@ python3 tools/ab_cooling.py
 python3 tools/cg_candidates.py
 python3 tools/fuselage_profile.py
 python3 tools/wing_box_spar.py
+python3 tools/stabilator_candidate.py
 ```
 
 `python3 tools/design_checks.py --strict` currently exits **1** because design

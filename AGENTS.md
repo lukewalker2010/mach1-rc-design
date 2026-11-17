@@ -77,6 +77,8 @@ evidence has been added.
 all relative document links resolve. Analysis regression tests are separate
 from physical qualification. Requirements and controlled mating dimensions
 above are unchanged; no release is implied.
+2026-11-17: stabilator net-section candidate added (38); fit only, pending
+clevis/laminate/flutter evidence.
 
 | Subsystem | Owner | Status | Next action |
 |---|---|---|---|
