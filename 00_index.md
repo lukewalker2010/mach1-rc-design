@@ -76,6 +76,7 @@ python3 tools/ab_cooling.py
 python3 tools/cg_candidates.py
 python3 tools/fuselage_profile.py
 python3 tools/wing_box_spar.py
+python3 proposals/structure/wing_box_spar/gen_spar_step.py
 python3 tools/stabilator_candidate.py
 ```
 

@@ -60,22 +60,27 @@ must still be qualified for tension, compression, buckling and environment.
 | R2 | 145.26 | 29.01 | 0.69 | 30.31 | 3.47 | 2.78 | 49.91 |
 | R3 | 124.95 | 12.08 | 0.59 | 17.51 | 2.91 | 2.31 | 36.46 |
 | R4 | 104.53 | 2.79 | 0.50 | 6.20 | 2.27 | 1.77 | 21.40 |
-| R5 tip | 84.21 | 0.00 | 0.40 | 2.00 | 1.57 | 1.17 | 0.00 |
+| R5 tip | 84.21 | 0.00 | 0.40 | 4.00 | 1.56 | 1.16 | 0.00 |
 
 All stations have positive separation, positive box height and cap footprints
-inside the chord. Total cap volume is **52.68 cm³ for both wings**; no density
+inside the chord. Total cap volume is **52.81 cm³ for both wings**; no density
 or mass claim is made without a material selection.
 
 ## 5. Net-part evidence
 
-`stations.csv` records the schedule. Fourteen `rib_*_front/rear.dxf` files
-contain one closed LWPOLYLINE each. The tests check:
+`stations.csv` records the schedule, and `wing_box_spar.step` is the lofted
+hollow box (local X = chord, Y = span 0–475 mm, Z = vertical; one solid,
+validated on import). It deliberately does **not** assume a global root-LE
+station, which remains an open interface (29 §R03).
+
+Fourteen `rib_*_front/rear.dxf` files contain one closed LWPOLYLINE each.
+The tests check:
 
 - cap force/stress consistency at the root;
 - positive fit at every station;
 - every rib vertex lies inside the outer airfoil contour;
 - no degenerate rib polygons and no spar holes;
-- committed CSV/DXF artifacts reproduce the generator exactly.
+- committed CSV/DXF/STEP artifacts reproduce the generator exactly.
 
 ## 6. Remaining work before release
 

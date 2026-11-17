@@ -3,6 +3,9 @@ import unittest
 
 from tools import wing_box_spar as wb
 from tools.design_checks import point_inside, read_polylines
+from tools.step_validate import _ocp, inspect as inspect_step
+
+OCP = _ocp()
 
 
 class BoxSparTests(unittest.TestCase):
@@ -57,6 +60,16 @@ class BoxSparTests(unittest.TestCase):
                         )
                     )
                     self.assertGreater(abs(twice_area), 1e-6)
+
+    @unittest.skipUnless(OCP, "OpenCascade not installed")
+    def test_spar_step_is_single_solid(self):
+        path = wb.OUT_DIR / "wing_box_spar.step"
+        self.assertTrue(path.exists())
+        info = inspect_step(path, OCP)
+        self.assertEqual(info["solids"], 1)
+        self.assertEqual(info["zero_volume"], 0)
+        self.assertAlmostEqual(info["zmin"], -3.0, delta=0.2)
+        self.assertAlmostEqual(info["zmax"], 3.0, delta=0.2)
 
     def test_committed_csv_and_dxf_match_candidate(self):
         csv_path = wb.OUT_DIR / "stations.csv"

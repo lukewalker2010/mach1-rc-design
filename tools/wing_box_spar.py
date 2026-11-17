@@ -39,7 +39,7 @@ SIGMA_SENSITIVITY_MPA = 400.0
 SKIN_MM = 0.5
 BOND_MM = 0.2
 WEB_THICK_MM = 1.0  # each of the two box-side shear walls
-MIN_CAP_WIDTH_MM = 2.0
+MIN_CAP_WIDTH_MM = 4.0
 SPAR_U = 0.50
 STATIONS = (
     ("C0", 0.0),
@@ -98,17 +98,23 @@ def size_cap(moment_nm, chord_mm, cap_thick_mm, sigma_mpa=SIGMA_SENSITIVITY_MPA)
         SPAR_U, width, chord_mm, skin_mm=SKIN_MM,
         bond_mm=BOND_MM, cap_thick_mm=cap_thick_mm,
     )
-    inner_height = fit["outer_depth_mm"] - 2 * (SKIN_MM + BOND_MM + cap_thick_mm)
+    outer_height = fit["outer_depth_mm"] - 2 * (SKIN_MM + BOND_MM)
+    inner_height = outer_height - 2 * cap_thick_mm
     if inner_height <= 0:
         raise ValueError("box inner height is not positive")
     if width > 0.8 * chord_mm:
         raise ValueError("cap footprint leaves impractical leading/trailing ribs")
+    cavity_width = width - 2 * WEB_THICK_MM
+    if cavity_width <= 0:
+        raise ValueError("cap width cannot contain both shear walls")
     return {
         "width_mm": width,
         "cap_area_mm2": width * cap_thick_mm,
         "separation_mm": fit["separation_mm"],
         "outer_depth_mm": fit["outer_depth_mm"],
+        "outer_height_mm": outer_height,
         "inner_height_mm": inner_height,
+        "cavity_width_mm": cavity_width,
         "box_le_mm": (SPAR_U * chord_mm - width / 2),
         "box_te_mm": (SPAR_U * chord_mm + width / 2),
         "u_lo": fit["u_lo"],
